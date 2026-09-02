@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation, Link } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import Nav from "./components/Nav";
 import NoiseFilter from "./components/NoiseFilter";
@@ -50,7 +50,7 @@ function ScrollManager() {
 
 function App() {
   return (
-    <BrowserRouter basename="/martinez-knight">
+    <HashRouter>
       <div id="top" className="relative min-h-screen bg-bg" style={{ overflowX: "clip" }}>
         <NoiseFilter />
         <Nav />
@@ -75,7 +75,7 @@ function App() {
         <Footer />
         <WhatsAppButton />
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
