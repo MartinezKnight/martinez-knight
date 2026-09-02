@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  background: #050608;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+body {
+  overflow-x: clip;
+}
+
+/* Display headings keep Montserrat — Geist has no italic-serif-adjacent
+   weight for the brand's editorial headline style */
+.hero-heading, .font-serif {
+  font-family: 'Montserrat', -apple-system, sans-serif;
+  background: linear-gradient(180deg, #ffffff 0%, #9fb4c2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Same Montserrat display face, but WITHOUT the white/light gradient fill
+   above — that gradient is tuned for headings on the dark (#050608) pages
+   and is nearly invisible on the light #EDEEF5 hero. Use this for any
+   heading on a light surface; color comes from normal Tailwind text-* classes. */
+.light-heading {
+  font-family: 'Montserrat', -apple-system, sans-serif;
+}
+
+/* ===== Liquid glass — exact values from spec ===== */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Shiny gradient headline — the light sweeps continuously across the fill */
+@keyframes shiny-sweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shiny-text {
+  background-image: linear-gradient(
+    to right,
+    #050608 0%, #0B2551 15%, #A4F4FD 35%, #00d4e8 50%, #0B2551 65%, #050608 85%, #050608 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: url(#mk-noise);
+  animation: shiny-sweep 6s linear infinite;
+}
+/* Continuous logo marquee — runs on its own via CSS animation (not tied to
+   page scroll). Track is the logo list duplicated once; animating exactly
+   -50% loops seamlessly regardless of viewport width. */
+@keyframes logo-marquee-kf {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.logo-marquee-track {
+  animation: logo-marquee-kf 78s linear infinite;
+}
+.logo-marquee-track:hover {
+  animation-play-state: paused;
+}
