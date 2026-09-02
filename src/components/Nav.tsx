@@ -28,7 +28,7 @@ export default function Nav() {
       >
         <div className="max-w-[100rem] mx-auto flex items-center justify-between px-5 sm:px-8 py-3.5">
           <Link to="/" className="flex items-center flex-shrink-0">
-            <img src="/media/logo.png" alt="Martinez Knight" className="h-7 md:h-8 w-auto" />
+            <img src="./media/logo.png" alt="Martinez Knight" className="h-7 md:h-8 w-auto" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
