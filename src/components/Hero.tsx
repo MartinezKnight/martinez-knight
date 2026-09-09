@@ -91,7 +91,7 @@ export default function Hero() {
                 See Our Work
               </Link>
             </div>
-            <span className="text-xs text-white/40">Digital infrastructure, built for Nigerian businesses</span>
+            <span className="text-xs text-white/40">Digital infrastructure for growing businesses, wherever you are</span>
           </motion.div>
         </div>
 

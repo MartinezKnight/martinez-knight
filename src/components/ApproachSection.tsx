@@ -50,6 +50,17 @@ export default function ApproachSection() {
           >
             Explore all services
           </Link>
+
+          <div className="hidden md:flex flex-col gap-5 mt-16 pt-8 border-t border-white/10 max-w-md">
+            <div>
+              <p className="text-white text-2xl font-bold">6</p>
+              <p className="text-white/45 text-xs mt-1">Connected service lines, one team</p>
+            </div>
+            <div>
+              <p className="text-white text-2xl font-bold">1</p>
+              <p className="text-white/45 text-xs mt-1">Point of contact for all of it</p>
+            </div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -60,11 +71,11 @@ export default function ApproachSection() {
           className="liquid-glass rounded-2xl p-5"
         >
           <p className="text-white/40 text-xs px-1 pb-4">What's included, end to end</p>
-          <div className="flex flex-col gap-3">
+          <div className="grid sm:grid-cols-2 gap-3">
             {SERVICES.map((s, i) => (
               <Link
                 key={s.slug}
-                to={`/services/${s.slug}`}
+                to={s.slug === "training-professional-development" ? "/training" : `/services/${s.slug}`}
                 className="liquid-glass rounded-lg p-4 flex items-start gap-3 hover:bg-white/[0.04] transition-colors"
               >
                 <span

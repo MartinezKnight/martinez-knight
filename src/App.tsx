@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, useLocation, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import Nav from "./components/Nav";
 import NoiseFilter from "./components/NoiseFilter";
@@ -13,16 +13,42 @@ import Blog from "./pages/Blog";
 import Career from "./pages/Career";
 import Contact from "./pages/Contact";
 import Training from "./pages/Training";
-import FAQ from "./pages/FAQ";
+import TrainingApply from "./pages/TrainingApply";
 import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
+import { SOCIALS } from "./data/socials";
+import { FacebookIcon, InstagramIcon, XIcon, LinkedInIcon } from "./components/SocialIcons";
+
+const SOCIAL_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Facebook: FacebookIcon,
+  Instagram: InstagramIcon,
+  X: XIcon,
+  LinkedIn: LinkedInIcon,
+};
 
 function Footer() {
   return (
-    <footer className="relative z-10 bg-bg text-center text-muted text-xs py-8 border-t border-white/5 flex flex-col items-center gap-3">
+    <footer className="relative z-10 bg-bg text-center text-muted text-xs py-8 border-t border-white/5 flex flex-col items-center gap-4">
+      <div className="flex items-center gap-4">
+        {SOCIALS.map((s) => {
+          const Icon = SOCIAL_ICONS[s.name];
+          return (
+            <a
+              key={s.name}
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.name}
+              className="text-muted hover:text-cyan transition-colors"
+            >
+              <Icon size={16} />
+            </a>
+          );
+        })}
+      </div>
       <div className="flex items-center gap-6">
         <Link to="/work" className="hover:text-cyan transition-colors">Work</Link>
-        <Link to="/faq" className="hover:text-cyan transition-colors">FAQ</Link>
+        <Link to="/contact" className="hover:text-cyan transition-colors">FAQ</Link>
         <Link to="/sitemap" className="hover:text-cyan transition-colors">Sitemap</Link>
       </div>
       <span>Martinez Knight — Digital Infrastructure &amp; Business Transformation Company</span>
@@ -50,7 +76,7 @@ function ScrollManager() {
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter basename="/martinez-knight">
       <div id="top" className="relative min-h-screen bg-bg" style={{ overflowX: "clip" }}>
         <NoiseFilter />
         <Nav />
@@ -67,7 +93,8 @@ function App() {
             <Route path="/career" element={<Career />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/training" element={<Training />} />
-            <Route path="/faq" element={<FAQ />} />
+            <Route path="/training/apply" element={<TrainingApply />} />
+            <Route path="/faq" element={<Navigate to="/contact" replace />} />
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -75,7 +102,7 @@ function App() {
         <Footer />
         <WhatsAppButton />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

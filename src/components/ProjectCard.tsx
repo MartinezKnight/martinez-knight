@@ -2,9 +2,17 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { LiveProjectButton } from "./Buttons";
+import { asset } from "../lib/assets";
 import type { Project } from "../data/projects";
 
 function domainFor(project: Project) {
+  if (project.liveUrl) {
+    try {
+      return new URL(project.liveUrl).hostname;
+    } catch {
+      /* fall through */
+    }
+  }
   return project.category;
 }
 
@@ -66,44 +74,69 @@ function BrowserMock({ project }: { project: Project }) {
         </span>
       </div>
 
-      {/* abstract page layout, themed to the project's brand gradient */}
-      <div className="aspect-[16/11] bg-white p-3.5 flex flex-col gap-3 relative z-10">
-        {/* nav row */}
-        <div className="flex items-center justify-between">
-          {project.logo ? (
-            <img src={project.logo} alt="" className="h-4 w-auto max-w-[70px] object-contain" />
-          ) : (
-            <span className="text-[10px] font-bold text-black/70">{initials}</span>
-          )}
-          <div className="flex items-center gap-1.5">
-            {[1, 2, 3].map((i) => (
-              <span key={i} className="w-4 h-1 rounded-full bg-black/10" />
+      {project.screenshot ? (
+        <div className="aspect-[16/11] relative z-10 overflow-hidden bg-white">
+          <img
+            src={project.screenshot}
+            alt={`${project.name} website`}
+            className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            loading="lazy"
+            onError={(e) => {
+              // if the proxy ever fails, hide the broken image rather than
+              // show a broken-image icon — the badge + chrome still read fine
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
+          />
+          <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm rounded-full px-2.5 py-1 z-20">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#28c840]" />
+            <span className="text-white text-[10px] font-medium">Live site</span>
+          </div>
+        </div>
+      ) : (
+        <div className="aspect-[16/11] bg-white p-3.5 flex flex-col gap-3 relative z-10">
+          <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm rounded-full px-2.5 py-1 z-20">
+            <span className={`w-1.5 h-1.5 rounded-full ${project.liveUrl ? "bg-[#28c840]" : "bg-[#febc2e]"}`} />
+            <span className="text-white text-[10px] font-medium">
+              {project.liveUrl ? "Live site" : "In development"}
+            </span>
+          </div>
+          {/* nav row */}
+          <div className="flex items-center justify-between">
+            {project.logo ? (
+              <img src={asset(project.logo)} alt="" className="h-4 w-auto max-w-[70px] object-contain" />
+            ) : (
+              <span className="text-[10px] font-bold text-black/70">{initials}</span>
+            )}
+            <div className="flex items-center gap-1.5">
+              {[1, 2, 3].map((i) => (
+                <span key={i} className="w-4 h-1 rounded-full bg-black/10" />
+              ))}
+            </div>
+          </div>
+
+          {/* hero block */}
+          <div
+            className="flex-1 rounded-lg relative overflow-hidden flex flex-col justify-center px-4"
+            style={{ background: project.gradient }}
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.25),transparent_60%)]" />
+            <div className="relative w-2/3 h-2 rounded-full bg-white/90 mb-1.5" />
+            <div className="relative w-1/2 h-2 rounded-full bg-white/60 mb-3" />
+            <div className="relative w-14 h-4 rounded-full bg-white/95" />
+          </div>
+
+          {/* content grid */}
+          <div className="grid grid-cols-3 gap-2">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="rounded-md border border-black/[0.06] p-1.5">
+                <div className="w-full h-4 rounded-sm mb-1.5" style={{ background: project.gradient, opacity: 0.25 }} />
+                <div className="w-full h-1 rounded-full bg-black/10 mb-1" />
+                <div className="w-2/3 h-1 rounded-full bg-black/10" />
+              </div>
             ))}
           </div>
         </div>
-
-        {/* hero block */}
-        <div
-          className="flex-1 rounded-lg relative overflow-hidden flex flex-col justify-center px-4"
-          style={{ background: project.gradient }}
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.25),transparent_60%)]" />
-          <div className="relative w-2/3 h-2 rounded-full bg-white/90 mb-1.5" />
-          <div className="relative w-1/2 h-2 rounded-full bg-white/60 mb-3" />
-          <div className="relative w-14 h-4 rounded-full bg-white/95" />
-        </div>
-
-        {/* content grid */}
-        <div className="grid grid-cols-3 gap-2">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="rounded-md border border-black/[0.06] p-1.5">
-              <div className="w-full h-4 rounded-sm mb-1.5" style={{ background: project.gradient, opacity: 0.25 }} />
-              <div className="w-full h-1 rounded-full bg-black/10 mb-1" />
-              <div className="w-2/3 h-1 rounded-full bg-black/10" />
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
     </motion.div>
   );
 }
@@ -165,7 +198,11 @@ export default function ProjectCard({ project, index }: { project: Project; inde
         )}
 
         <div className="flex items-center gap-5">
-          <LiveProjectButton onClick={go} />
+          <LiveProjectButton
+            label={project.liveUrl ? "Visit Live Site" : "View Project"}
+            href={project.liveUrl}
+            onClick={project.liveUrl ? undefined : go}
+          />
           <button onClick={go} className="group/link flex items-center gap-1.5 text-sm font-medium text-white">
             <span className="relative">
               Full case study

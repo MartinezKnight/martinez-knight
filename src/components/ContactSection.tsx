@@ -5,10 +5,6 @@ import { ContactButton } from "./Buttons";
 import SectionHeading from "./SectionHeading";
 
 export default function ContactSection() {
-  // Replace with your full phone number in international format (no + or spaces)
-  const whatsappNumber = "+2347039148743"; 
-  const whatsappMessage = encodeURIComponent("Hello! I would like to book a free 30-minute strategy consultation.");
-
   return (
     <section id="contact" className="max-w-[100rem] mx-auto px-5 sm:px-8 py-20 md:py-32">
       <motion.div
@@ -28,10 +24,7 @@ export default function ContactSection() {
           Book a free 30-minute strategy consultation with a senior Martinez Knight strategist.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <ContactButton
-            label="Book Free Consultation"
-            href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
-          />
+          <ContactButton label="Book Free Consultation" href="/contact" />
           <Link
             to="/work"
             className="inline-flex items-center gap-1.5 rounded-full border border-white/15 text-white text-sm font-medium px-6 py-3 hover:bg-white/5 transition-colors"

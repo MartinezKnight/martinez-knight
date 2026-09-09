@@ -47,8 +47,7 @@ export default function Sitemap() {
               { to: "/services", label: "Services" },
               { to: "/blog", label: "Blog" },
               { to: "/career", label: "Career" },
-              { to: "/contact", label: "Contact Us" },
-              { to: "/faq", label: "FAQ" },
+              { to: "/contact", label: "Contact Us (incl. FAQ)" },
             ]}
           />
           <Column

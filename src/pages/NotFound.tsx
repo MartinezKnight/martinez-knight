@@ -22,10 +22,10 @@ export default function NotFound() {
         <div className="flex flex-wrap items-center justify-center gap-4">
           <ContactButton label="Back To Home" href="/#top" />
           <Link
-            to="/faq"
+            to="/contact"
             className="text-white/60 hover:text-cyan text-sm uppercase tracking-widest transition-colors"
           >
-            Visit FAQ →
+            Contact Us →
           </Link>
         </div>
       </FadeIn>

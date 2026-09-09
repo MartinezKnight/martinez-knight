@@ -37,15 +37,23 @@ export function ContactButton({
 export function LiveProjectButton({
   label = "View Project",
   onClick,
+  href,
 }: {
   label?: string;
   onClick?: () => void;
+  href?: string;
 }) {
+  const cls =
+    "inline-flex items-center rounded-full border-2 border-cyan/60 px-8 py-3 sm:px-10 sm:py-3.5 text-sm sm:text-base font-medium uppercase tracking-widest text-cyan transition-colors duration-300 hover:bg-cyan/10";
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+        {label}
+      </a>
+    );
+  }
   return (
-    <button
-      onClick={onClick}
-      className="inline-flex items-center rounded-full border-2 border-cyan/60 px-8 py-3 sm:px-10 sm:py-3.5 text-sm sm:text-base font-medium uppercase tracking-widest text-cyan transition-colors duration-300 hover:bg-cyan/10"
-    >
+    <button onClick={onClick} className={cls}>
       {label}
     </button>
   );
