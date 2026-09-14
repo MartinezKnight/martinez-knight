@@ -203,16 +203,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
             href={project.liveUrl}
             onClick={project.liveUrl ? undefined : go}
           />
-          <button onClick={go} className="group/link flex items-center gap-1.5 text-sm font-medium text-white">
-            <span className="relative">
-              Full case study
-              <span className="absolute left-0 -bottom-0.5 w-full h-px bg-white scale-x-0 origin-left group-hover/link:scale-x-100 transition-transform duration-300" />
-            </span>
-            <ArrowUpRight
-              size={14}
-              className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
-            />
-          </button>
+       
         </div>
       </div>
     </motion.div>
