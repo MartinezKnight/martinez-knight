@@ -84,7 +84,7 @@ export const PROJECTS: Project[] = [
     long: "Kadtech Solutions Limited runs on fast-moving retail and repair traffic — Martinez Knight built the digital infrastructure to keep pace with it.",
     gradient: "linear-gradient(135deg, #BE4C00 0%, #00d4e8 100%)",
     logo: "/media/kadtech-logo.png",
-    liveUrl: "https://kadtech-website.vercel.app/",
+    liveUrl: "https://www.kadtechinnovativesolutions.com/",
     screenshot: proxied("https://kadtech-website.vercel.app/store/storefront.png"),
     deliverables: ["Website", "Business Email", "Hosting"],
   },
