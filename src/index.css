@@ -97,7 +97,21 @@ body {
 }
 .logo-marquee-track {
   animation: logo-marquee-kf 78s linear infinite;
-}
-.logo-marquee-track:hover {
+}.logo-marquee-track:hover {
   animation-play-state: paused;
+}
+/* Converts all client logos to black and white */
+img[alt*="client"], 
+.client-logo img, 
+.partners img {
+  filter: grayscale(100%) brightness(2);
+  opacity: 0.7;
+}
+
+/* Brings back color when hovered over */
+img[alt*="client"]:hover, 
+.client-logo img:hover, 
+.partners img:hover {
+  filter: grayscale(0%);
+  opacity: 1;
 }
