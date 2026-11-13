@@ -23,6 +23,7 @@ function LogoChip({ logo }: { logo: (typeof LOGOS)[number] }) {
     <div
       title={logo.name}
       className="flex-shrink-0 w-40 h-24 sm:w-52 sm:h-28 rounded-xl bg-white border border-black/10 flex items-center justify-center p-3"
+      className="max-w-full max-h-full object-contain brightness-0 invert"
     >
       <img
         src={asset(logo.src)}
