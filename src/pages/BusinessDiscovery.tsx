@@ -19,7 +19,7 @@ type FormState = Record<string, string | string[]>;
 const initial: FormState = {
   businessName:"", industry:"", location:"", website:"", businessAge:"", description:"",
   contactName:"", role:"", email:"", phone:"", preferredChannel:"WhatsApp", preferredTime:"",
-  offerings:"", priorityOffer:"", targetCustomers:[], marketArea:"", platforms:[], systems:[],
+  offerings:"", priorityOffer:"", targetCustomers:"", marketArea:"", platforms:[], systems:[],
   digitalMaturity:"", previousInvestment:"", previousResults:"", challenges:[], mainPriority:"",
   desiredOutcomes:[], successMeasures:[], timeline:"", budget:"", decisionMaker:"", otherNotes:"", consent:"yes",
 };
