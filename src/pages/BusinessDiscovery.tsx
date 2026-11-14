@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import { CheckCircle2, ChevronDown, ChevronUp, ArrowRight, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTitle } from "../hooks/useTitle";
