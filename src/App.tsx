@@ -12,6 +12,8 @@ import ProjectDetail from "./pages/ProjectDetail";
 import Blog from "./pages/Blog";
 import Career from "./pages/Career";
 import Contact from "./pages/Contact";
+import BusinessDiscovery from "./pages/BusinessDiscovery";
+import ProspectPipeline from "./pages/ProspectPipeline";
 import Training from "./pages/Training";
 import TrainingApply from "./pages/TrainingApply";
 import Sitemap from "./pages/Sitemap";
@@ -92,6 +94,8 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/career" element={<Career />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/business-discovery" element={<BusinessDiscovery />} />
+            <Route path="/internal/prospects" element={<ProspectPipeline />} />
             <Route path="/training" element={<Training />} />
             <Route path="/training/apply" element={<TrainingApply />} />
             <Route path="/faq" element={<Navigate to="/contact" replace />} />
