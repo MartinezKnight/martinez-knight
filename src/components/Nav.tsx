@@ -11,6 +11,7 @@ const LINKS = [
   { to: "/blog", label: "Blog" },
   { to: "/career", label: "Career" },
   { to: "/contact", label: "Contact Us" },
+  { to: "/business-discovery", label: "Business Growth" },
 ];
 
 export default function Nav() {
@@ -116,7 +117,7 @@ export default function Nav() {
 
           <div className="flex items-center gap-3">
             <Link
-              to="/contact"
+              to="/business-discovery"
               className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-white text-black text-sm font-medium px-5 py-2.5 transition-all hover:bg-white/90 active:scale-[0.98]"
             >
               Get Started
@@ -204,7 +205,7 @@ export default function Nav() {
               </Link>
             ))}
             <Link
-              to="/contact"
+              to="/business-discovery"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-white text-black text-sm font-medium px-5 py-3"
             >
