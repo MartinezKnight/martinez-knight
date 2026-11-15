@@ -1,7 +1,5 @@
-// Supabase Database Webhook handler: sends an internal lead alert and a prospect acknowledgement.
+// Supabase Database Webhook handler: forwards a new prospect to a private Google Apps Script mailer.
 const corsHeaders = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "content-type, x-webhook-secret", "Access-Control-Allow-Methods": "POST, OPTIONS" };
-
-const escapeHtml = (value: unknown) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char] as string);
 const clean = (value: unknown) => String(value ?? "").trim() || "Not provided";
 
 Deno.serve(async (request) => {
@@ -13,10 +11,10 @@ Deno.serve(async (request) => {
     return new Response("Unauthorized", { status: 401, headers: corsHeaders });
   }
 
-  const resendKey = Deno.env.get("RESEND_API_KEY");
-  const from = Deno.env.get("EMAIL_FROM");
+  const mailerUrl = Deno.env.get("GOOGLE_APPS_SCRIPT_URL");
+  const mailerSecret = Deno.env.get("GOOGLE_APPS_SCRIPT_SECRET");
   const adminEmail = Deno.env.get("ADMIN_NOTIFICATION_EMAIL");
-  if (!resendKey || !from || !adminEmail) {
+  if (!mailerUrl || !mailerSecret || !adminEmail) {
     return new Response("Email service is not fully configured.", { status: 503, headers: corsHeaders });
   }
 
@@ -29,28 +27,23 @@ Deno.serve(async (request) => {
     const lead = payload.record ?? {};
     if (!lead.id || !lead.business_name) return new Response("Invalid prospect record.", { status: 400, headers: corsHeaders });
 
-    const business = clean(lead.business_name);
-    const contact = clean(lead.contact_name);
-    const email = String(lead.email ?? "").trim();
-    const phone = clean(lead.phone);
-    const industry = clean(lead.industry);
-    const location = clean(lead.location);
     const form = lead.form_data ?? {};
     const preferredChannel = clean(form.preferredChannel);
     const challenge = Array.isArray(form.challenges) ? form.challenges.join(", ") : clean(form.challenges);
     const priority = clean(form.mainPriority);
     const outcomes = Array.isArray(form.desiredOutcomes) ? form.desiredOutcomes.join(", ") : clean(form.desiredOutcomes);
     const dashboardUrl = "https://martinezknight.github.io/martinez-knight/internal/prospects";
+    const email = String(lead.email ?? "").trim();
 
     const internalText = [
       "A new business discovery form has been submitted.",
       "",
-      `Business: ${business}`,
-      `Contact: ${contact}`,
+      `Business: ${clean(lead.business_name)}`,
+      `Contact: ${clean(lead.contact_name)}`,
       `Email: ${clean(email)}`,
-      `Phone: ${phone}`,
-      `Industry: ${industry}`,
-      `Location: ${location}`,
+      `Phone: ${clean(lead.phone)}`,
+      `Industry: ${clean(lead.industry)}`,
+      `Location: ${clean(lead.location)}`,
       `Priority: ${priority}`,
       `Challenges: ${challenge}`,
       `Desired outcomes: ${outcomes}`,
@@ -59,55 +52,46 @@ Deno.serve(async (request) => {
       `Review this prospect in the private pipeline: ${dashboardUrl}`,
     ].join("\n");
 
-    const internalHtml = `<h2>New business discovery submission</h2><p><strong>Business:</strong> ${escapeHtml(business)}<br><strong>Contact:</strong> ${escapeHtml(contact)}<br><strong>Email:</strong> ${escapeHtml(clean(email))}<br><strong>Phone:</strong> ${escapeHtml(phone)}<br><strong>Industry:</strong> ${escapeHtml(industry)}<br><strong>Location:</strong> ${escapeHtml(location)}<br><strong>Priority:</strong> ${escapeHtml(priority)}<br><strong>Challenges:</strong> ${escapeHtml(challenge)}<br><strong>Desired outcomes:</strong> ${escapeHtml(outcomes)}<br><strong>Preferred channel:</strong> ${escapeHtml(preferredChannel)}</p><p><a href="${dashboardUrl}">Open the private prospect pipeline</a></p>`;
+    const internalHtml = `<h2>New business discovery submission</h2><p><strong>Business:</strong> ${clean(lead.business_name)}<br><strong>Contact:</strong> ${clean(lead.contact_name)}<br><strong>Email:</strong> ${clean(email)}<br><strong>Phone:</strong> ${clean(lead.phone)}<br><strong>Industry:</strong> ${clean(lead.industry)}<br><strong>Location:</strong> ${clean(lead.location)}<br><strong>Priority:</strong> ${priority}<br><strong>Challenges:</strong> ${challenge}<br><strong>Desired outcomes:</strong> ${outcomes}<br><strong>Preferred channel:</strong> ${preferredChannel}</p><p><a href="${dashboardUrl}">Open the private prospect pipeline</a></p>`;
 
-    const send = async (body: Record<string, unknown>) => {
-      const response = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || result.name || "Email delivery failed.");
-      return result;
-    };
+    const acknowledgementText = [
+      `Hello ${clean(lead.contact_name)},`,
+      "",
+      "Thank you for taking the time to share information about your business with Martinez Knight.",
+      "",
+      "We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.",
+      "",
+      "Thank you for considering Martinez Knight.",
+      "",
+      "Regards,",
+      "Martinez Knight",
+      "Digital Infrastructure & Business Transformation",
+    ].join("\n");
 
-    const messages = [send({
-      from,
-      to: [adminEmail],
-      subject: `New prospect: ${business}`,
-      text: internalText,
-      html: internalHtml,
-      ...(email ? { reply_to: email } : {}),
-    })];
+    const acknowledgementHtml = `<p>Hello ${clean(lead.contact_name)},</p><p>Thank you for taking the time to share information about your business with Martinez Knight.</p><p>We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.</p><p>Thank you for considering Martinez Knight.</p><p>Regards,<br><strong>Martinez Knight</strong><br>Digital Infrastructure &amp; Business Transformation</p>`;
 
-    if (email) {
-      const acknowledgementText = [
-        `Hello ${contact},`,
-        "",
-        "Thank you for taking the time to share information about your business with Martinez Knight.",
-        "",
-        "We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.",
-        "",
-        "Thank you for considering Martinez Knight.",
-        "",
-        "Regards,",
-        "Martinez Knight",
-        "Digital Infrastructure & Business Transformation",
-      ].join("\n");
-      const acknowledgementHtml = `<p>Hello ${escapeHtml(contact)},</p><p>Thank you for taking the time to share information about your business with Martinez Knight.</p><p>We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.</p><p>Thank you for considering Martinez Knight.</p><p>Regards,<br><strong>Martinez Knight</strong><br>Digital Infrastructure &amp; Business Transformation</p>`;
-      messages.push(send({
-        from,
-        to: [email],
-        subject: "Thank You for Sharing Your Business Goals with Martinez Knight",
-        text: acknowledgementText,
-        html: acknowledgementHtml,
-        reply_to: adminEmail,
-      }));
+    const response = await fetch(mailerUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        secret: mailerSecret,
+        adminEmail,
+        prospectEmail: email,
+        businessName: clean(lead.business_name),
+        internalText,
+        internalHtml,
+        acknowledgementText,
+        acknowledgementHtml,
+        dashboardUrl,
+      }),
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.success !== true) {
+      console.error("Google mailer rejected notification:", result.error || response.status);
+      return new Response("Email delivery failed. The prospect record remains saved.", { status: 502, headers: corsHeaders });
     }
 
-    const results = await Promise.all(messages);
-    return new Response(JSON.stringify({ success: true, sent: results.length }), {
+    return new Response(JSON.stringify({ success: true, internalSent: true, acknowledgementSent: Boolean(email) }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
