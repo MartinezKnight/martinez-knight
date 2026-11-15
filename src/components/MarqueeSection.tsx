@@ -63,7 +63,12 @@ export default function MarqueeSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden">
+    <section ref={sectionRef} className="pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden" aria-label="Technology and business capabilities">
+      <div className="mx-auto max-w-5xl px-5 sm:px-8 mb-8 text-center">
+        <p className="text-white/45 text-xs uppercase tracking-[0.18em]">Capabilities</p>
+        <h2 className="mt-3 text-white text-2xl sm:text-3xl font-semibold tracking-tight">Technology that supports the way you work.</h2>
+        <p className="mt-3 mx-auto max-w-2xl text-white/55 text-sm sm:text-base leading-relaxed">From your online presence to the systems behind daily operations, we help bring essential business tools together.</p>
+      </div>
       <div className="flex flex-col gap-3">
         <Row items={ROW1} colors={ICONS_ROW1} direction={1} offset={offset} />
         <Row items={ROW2} colors={ICONS_ROW2} direction={-1} offset={offset} />
