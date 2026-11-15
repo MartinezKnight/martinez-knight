@@ -8,7 +8,9 @@ In Supabase Dashboard → SQL Editor, run the complete contents of `application_
 
 ## 2. Deploy the notification function
 
-Deploy the Edge Function in `functions/application-email/index.ts` with function name `application-email`.
+Deploy the Edge Function in `functions/application-email/index.ts` with function name `application-email`. The `config.toml` entry disables JWT verification for this Database Webhook endpoint; the function independently validates the `x-webhook-secret` header.
+
+Also redeploy the existing `prospect-email` Edge Function from `functions/prospect-email/index.ts`. Its updated version recognises contact-form submissions and uses the custom-domain URL for the private pipeline link.
 
 It reuses the existing Supabase Edge Function secrets:
 - `WEBHOOK_SECRET`
