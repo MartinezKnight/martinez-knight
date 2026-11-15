@@ -14,14 +14,14 @@ export default function ContactSection() {
         transition={{ duration: 0.8 }}
         className="relative text-center"
       >
-        <p className="text-cyan text-xs tracking-[0.3em] uppercase mb-6">Ready To Lead Your Market?</p>
+        <p className="text-cyan text-xs tracking-[0.3em] uppercase mb-6">A practical next step</p>
         <SectionHeading className="mb-6">
-          Let's Build The System
+          Let's build
           <br />
-          <span className="italic font-light">Your Business Runs On.</span>
+          <span className="italic font-light">what your business needs.</span>
         </SectionHeading>
         <p className="text-white/60 max-w-md mx-auto mb-10 text-sm leading-relaxed">
-          Tell us what your business needs. We will review your enquiry and recommend a practical next step.
+          Share what you are working towards. We will review your enquiry and get back to you with a clear next step.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <ContactButton label="Send an Enquiry" href="/contact?source=homepage-consultation" />
