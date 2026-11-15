@@ -8,10 +8,9 @@ import { asset } from "../lib/assets";
 const LINKS = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
-  { to: "/blog", label: "Blog" },
-  { to: "/career", label: "Career" },
-  { to: "/business-discovery", label: "Business Growth" },
-  { to: "/contact", label: "Contact Us" },
+  { to: "/blog", label: "Insights" },
+  { to: "/career", label: "Careers" },
+  { to: "/contact", label: "Contact" },
 ];
 
 export default function Nav() {
@@ -64,6 +63,10 @@ export default function Nav() {
               onMouseLeave={() => setServicesOpen(false)}
             >
               <button
+                type="button"
+                aria-expanded={servicesOpen}
+                aria-haspopup="true"
+                onClick={() => setServicesOpen((v) => !v)}
                 className={`flex items-center gap-1 text-sm font-medium transition-colors ${
                   servicesActive ? "text-white" : "text-white/70 hover:text-white"
                 }`}
@@ -102,7 +105,7 @@ export default function Nav() {
               </AnimatePresence>
             </div>
 
-            {LINKS.slice(2).map((l) => (
+            <Link to="/work" className={`text-sm font-medium transition-colors ${isActive("/work") || location.pathname.startsWith("/work/") ? "text-white" : "text-white/70 hover:text-white"}`}>Work</Link>\n            {LINKS.slice(2).map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
