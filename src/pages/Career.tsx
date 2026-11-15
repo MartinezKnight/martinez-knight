@@ -4,6 +4,7 @@ import FadeIn from "../components/FadeIn";
 import SectionHeading from "../components/SectionHeading";
 import TrainingAd from "../components/TrainingAd";
 import { useTitle } from "../hooks/useTitle";
+import { isSupabaseConfigured, submitApplication } from "../lib/supabase";
 
 const FIELDS_OF_INTEREST = [
   "Web / Software Development",
@@ -21,32 +22,31 @@ const EXPERIENCE_LEVELS = ["Entry-level / No experience yet", "1–3 years", "3�
 export default function Career() {
   useTitle("Careers");
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    field: FIELDS_OF_INTEREST[0],
-    experience: EXPERIENCE_LEVELS[0],
-    portfolio: "",
-    message: "",
+    name: "", email: "", phone: "", field: FIELDS_OF_INTEREST[0],
+    experience: EXPERIENCE_LEVELS[0], portfolio: "", message: "", consent: false,
   });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const body = [
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Phone / WhatsApp: ${form.phone}`,
-      `Field of interest: ${form.field}`,
-      `Experience level: ${form.experience}`,
-      `CV / Portfolio / LinkedIn link: ${form.portfolio}`,
-      "",
-      form.message,
-    ].join("\n");
-    window.location.href = `mailto:hello@martinezknight.com?subject=${encodeURIComponent(
-      "Candidate Registration — " + form.field
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    if (!isSupabaseConfigured()) {
+      setError("The application system is temporarily unavailable. Please try again later.");
+      setStatus("error");
+      return;
+    }
+    setStatus("sending");
+    setError("");
+    try {
+      await submitApplication("candidate_applications", {
+        full_name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim(),
+        field_of_interest: form.field, form_data: { ...form, consent: true }, consent: true,
+      });
+      setStatus("sent");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "We could not submit your registration. Please try again.");
+      setStatus("error");
+    }
   };
 
   const inputCls =
@@ -70,17 +70,11 @@ export default function Career() {
       <div className="max-w-xl mx-auto mt-14 mb-16">
         <FadeIn delay={0.05}>
           <div className="liquid-glass rounded-2xl p-6 sm:p-10">
-            {sent ? (
+            {status === "sent" ? (
               <div className="text-center py-10">
                 <CheckCircle2 size={40} className="text-cyan mx-auto mb-4" />
-                <h3 className="text-white text-xl font-semibold mb-2">Your email client should be opening now</h3>
-                <p className="text-white/60 text-sm">
-                  If it didn't, email us directly at{" "}
-                  <a href="mailto:hello@martinezknight.com" className="text-cyan hover:underline">
-                    hello@martinezknight.com
-                  </a>
-                  .
-                </p>
+                <h3 className="text-white text-xl font-semibold mb-2">Registration received</h3>
+                <p className="text-white/60 text-sm">Thank you for registering your interest. Your details have been submitted securely and will be reviewed when a suitable opportunity arises.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -165,11 +159,13 @@ export default function Career() {
                     placeholder="Tell us about yourself"
                   />
                 </label>
-                <button
-                  type="submit"
-                  className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors"
-                >
-                  Register Interest
+                <label className="flex items-start gap-3 text-xs leading-5 text-white/55">
+                  <input type="checkbox" required checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1 accent-cyan" />
+                  <span>I consent to Martinez Knight storing and reviewing my details for recruitment opportunities and contacting me about suitable roles.</span>
+                </label>
+                {status === "error" && <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-200">{error}</p>}
+                <button type="submit" disabled={status === "sending"} className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors disabled:opacity-50">
+                  {status === "sending" ? "Submitting..." : "Register Interest"}
                 </button>
               </form>
             )}
