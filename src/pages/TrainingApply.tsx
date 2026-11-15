@@ -4,6 +4,7 @@ import { CheckCircle2, ChevronDown } from "lucide-react";
 import FadeIn from "../components/FadeIn";
 import SectionHeading from "../components/SectionHeading";
 import { useTitle } from "../hooks/useTitle";
+import { isSupabaseConfigured, submitApplication } from "../lib/supabase";
 
 const COURSES = [
   "Web Development",
@@ -69,18 +70,13 @@ export default function TrainingApply() {
   const initialTrack = TRACK_OPTIONS.some((t) => t.value === trackFromUrl) ? trackFromUrl! : TRACK_OPTIONS[2].value;
 
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    city: "",
-    education: EDUCATION_LEVELS[1],
-    availability: AVAILABILITY[2],
-    heardFrom: HEARD_FROM[0],
-    track: initialTrack,
-    courses: [] as string[],
-    message: "",
+    name: "", email: "", phone: "", city: "",
+    education: EDUCATION_LEVELS[1], availability: AVAILABILITY[2],
+    heardFrom: HEARD_FROM[0], track: initialTrack, courses: [] as string[],
+    message: "", consent: false,
   });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
 
   const toggleCourse = (course: string) => {
     setForm((f) => ({
@@ -89,28 +85,26 @@ export default function TrainingApply() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Static site, no backend — hands off to the visitor's email client with
-    // the form pre-filled. Swap for a form service (Formspree, Web3Forms) or
-    // a real endpoint if you want submissions landing somewhere without that.
-    const body = [
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Phone / WhatsApp: ${form.phone}`,
-      `City: ${form.city}`,
-      `Education level: ${form.education}`,
-      `Track: ${TRACK_OPTIONS.find((t) => t.value === form.track)?.label}`,
-      `Course(s) of interest: ${form.courses.length ? form.courses.join(", ") : "None selected"}`,
-      `Availability: ${form.availability}`,
-      `Heard about us via: ${form.heardFrom}`,
-      "",
-      form.message,
-    ].join("\n");
-    window.location.href = `mailto:hello@martinezknight.com?subject=${encodeURIComponent(
-      "Training Programme Application"
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    if (!isSupabaseConfigured()) {
+      setError("The application system is temporarily unavailable. Please try again later.");
+      setStatus("error");
+      return;
+    }
+    setStatus("sending");
+    setError("");
+    try {
+      await submitApplication("training_applications", {
+        full_name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim(),
+        programme: TRACK_OPTIONS.find((t) => t.value === form.track)?.label || form.track,
+        form_data: { ...form, consent: true }, consent: true,
+      });
+      setStatus("sent");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "We could not submit your application. Please try again.");
+      setStatus("error");
+    }
   };
 
   const inputCls =
@@ -143,17 +137,11 @@ export default function TrainingApply() {
       <div className="max-w-2xl mx-auto">
         <FadeIn delay={0}>
           <div className="liquid-glass rounded-2xl p-6 sm:p-10">
-            {sent ? (
+            {status === "sent" ? (
               <div className="text-center py-10">
                 <CheckCircle2 size={40} className="text-cyan mx-auto mb-4" />
-                <h3 className="text-white text-xl font-semibold mb-2">Your email client should be opening now</h3>
-                <p className="text-white/60 text-sm">
-                  If it didn't, email us directly at{" "}
-                  <a href="mailto:hello@martinezknight.com" className="text-cyan hover:underline">
-                    hello@martinezknight.com
-                  </a>
-                  .
-                </p>
+                <h3 className="text-white text-xl font-semibold mb-2">Application received</h3>
+                <p className="text-white/60 text-sm">Thank you. Your training application has been submitted securely. Our team will review your interests and contact you with relevant next steps.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -303,11 +291,13 @@ export default function TrainingApply() {
                   />
                 </label>
 
-                <button
-                  type="submit"
-                  className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors"
-                >
-                  Send Application
+                <label className="flex items-start gap-3 text-xs leading-5 text-white/55">
+                  <input type="checkbox" required checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1 accent-cyan" />
+                  <span>I consent to Martinez Knight storing and reviewing my information for this training application and contacting me about the programme.</span>
+                </label>
+                {status === "error" && <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-200">{error}</p>}
+                <button type="submit" disabled={status === "sending"} className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors disabled:opacity-50">
+                  {status === "sending" ? "Submitting..." : "Send Application"}
                 </button>
               </form>
             )}
