@@ -97,7 +97,7 @@ export default function FAQ() {
       <FadeIn delay={0.1}>
         <div className="mt-16 max-w-3xl">
           <p className="text-muted mb-6">Didn't find what you're looking for?</p>
-          <ContactButton label="Ask Us Directly" />
+          <ContactButton label="Ask Us Directly" href="/contact?source=faq-page" />
         </div>
       </FadeIn>
     </div>
