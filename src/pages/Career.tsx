@@ -60,10 +60,13 @@ export default function Career() {
           Careers.
         </SectionHeading>
         <p className="text-center text-white/60 max-w-lg mx-auto text-base leading-relaxed mb-2">
-          Martinez Knight has roots in HR management and recruitment support,
-          including our early work in Asaba, Delta State, Nigeria. We continue
-          to support candidate registration and recruitment-related engagements
-          alongside our wider digital and business services. There are no open
+          Martinez Knight, formerly known as Martinez Knight HR Management and
+          Consultancy, has roots in HR management and recruitment support,
+          including our early work in Asaba, Delta State, Nigeria. Our background
+          includes HR consultancy and recruitment support for employers and
+          candidates. We continue to support candidate registration and
+          recruitment-related engagements alongside our wider digital and
+          business services. There are no open
           internal roles at present, but you may register your interest below
           for suitable opportunities with client organisations.
         </p>
