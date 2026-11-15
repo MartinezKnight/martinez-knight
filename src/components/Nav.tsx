@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronRight, ChevronDown, LockKeyhole } from "lucide-react";
 import { SERVICES } from "../data/services";
 import { asset } from "../lib/assets";
 
@@ -29,11 +29,11 @@ export default function Nav() {
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-md border-b border-white/10"
+        className="fixed top-0 left-0 right-0 w-full max-w-full z-50 bg-black/40 backdrop-blur-md border-b border-white/10"
       >
-        <div className="max-w-[100rem] mx-auto flex items-center justify-between px-5 sm:px-8 py-3.5">
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
-            <img src={asset("/media/logo.png")} alt="Martinez Knight" className="h-7 md:h-8 w-auto" />
+        <div className="w-full max-w-[100rem] min-w-0 mx-auto flex items-center justify-between px-4 sm:px-8 py-3.5">
+          <Link to="/" className="flex min-w-0 items-center gap-2.5 shrink-0 pl-1">
+            <img src={asset("/media/logo.png")} alt="Martinez Knight" className="h-8 sm:h-9 w-auto max-w-[58px] object-contain shrink-0" />
             <span className="light-heading text-white font-semibold text-base md:text-lg tracking-tight hidden sm:inline">
               Martinez Knight
             </span>
@@ -115,7 +115,7 @@ export default function Nav() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <Link
               to="/business-discovery"
               className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-white text-black text-sm font-medium px-5 py-2.5 transition-all hover:bg-white/90 active:scale-[0.98]"
@@ -124,6 +124,9 @@ export default function Nav() {
               <ChevronRight size={14} />
             </Link>
 
+            <Link to="/internal/prospects" aria-label="Admin sign in" title="Admin sign in" className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-2 text-xs text-white/65 hover:text-cyan hover:border-cyan/40 transition-colors">
+              <LockKeyhole size={13} /> Admin
+            </Link>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
@@ -204,6 +207,9 @@ export default function Nav() {
                 {l.label}
               </Link>
             ))}
+            <Link to="/internal/prospects" onClick={() => setOpen(false)} className="mt-2 flex items-center gap-2 border-t border-white/10 py-3 text-sm text-white/65">
+              <LockKeyhole size={15} /> Admin Sign In
+            </Link>
             <Link
               to="/business-discovery"
               onClick={() => setOpen(false)}
