@@ -48,17 +48,13 @@ function Footer() {
           );
         })}
       </div>
-      <div className="flex items-center gap-6">
+      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4">
         <Link to="/work" className="hover:text-cyan transition-colors">Work</Link>
         <Link to="/contact" className="hover:text-cyan transition-colors">FAQ</Link>
         <Link to="/sitemap" className="hover:text-cyan transition-colors">Sitemap</Link>
       </div>
-      <div className="flex items-center gap-2 text-white/30">
-        <span>Martinez Knight — Digital Infrastructure &amp; Business Transformation Company</span>
-        <span aria-hidden="true">·</span>
-        <Link to="/internal/prospects" className="inline-flex items-center gap-1 hover:text-cyan transition-colors" aria-label="Admin sign in">
-          Admin Sign In
-        </Link>
+      <div className="px-4 text-center text-white/30">
+        Martinez Knight — Digital Infrastructure &amp; Business Transformation Company
       </div>
     </footer>
   );
