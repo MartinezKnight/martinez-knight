@@ -32,30 +32,26 @@ const SOCIAL_ICONS: Record<string, React.ComponentType<{ size?: number; classNam
 function Footer() {
   return (
     <footer className="relative z-10 bg-bg text-center text-muted text-xs py-8 border-t border-white/5 flex flex-col items-center gap-4">
-      <div className="flex items-center gap-4">
+      <nav aria-label="Martinez Knight social media" className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 px-4">
         {SOCIALS.map((s) => {
           const Icon = SOCIAL_ICONS[s.name];
           return (
-            <a
-              key={s.name}
-              href={s.url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
               aria-label={s.name}
-              className="text-muted hover:text-cyan transition-colors"
-            >
-              <Icon size={16} />
+              className="inline-flex items-center gap-2 text-muted hover:text-cyan transition-colors">
+              <Icon size={15} />
+              <span>{s.name === "X" ? "X (Twitter)" : s.name}</span>
             </a>
           );
         })}
-      </div>
+      </nav>
       <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4">
         <Link to="/work" className="hover:text-cyan transition-colors">Work</Link>
         <Link to="/faq" className="hover:text-cyan transition-colors">FAQs</Link>
         <Link to="/sitemap" className="hover:text-cyan transition-colors">Sitemap</Link>
       </div>
       <div className="px-4 text-center text-white/30">
-        Martinez Knight — Digital Infrastructure &amp; Business Transformation Company
+        Martinez Knight. Digital Infrastructure &amp; Business Transformation.
       </div>
     </footer>
   );
