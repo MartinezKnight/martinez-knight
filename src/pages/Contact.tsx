@@ -30,6 +30,9 @@ export default function Contact() {
   const [searchParams] = useSearchParams();
   const requestedService = searchParams.get("service") || "";
   const enquirySource = searchParams.get("source") || "website-contact";
+  const interestOptions = requestedService && !AREAS_OF_INTEREST.includes(requestedService)
+    ? [requestedService, ...AREAS_OF_INTEREST]
+    : AREAS_OF_INTEREST;
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -203,7 +206,7 @@ export default function Contact() {
                     className={inputCls}
                   >
                     <option value="" className="bg-[#0a0c10]">Select a service or enquiry type</option>
-                    {AREAS_OF_INTEREST.map((opt) => (
+                    {interestOptions.map((opt) => (
                       <option key={opt} value={opt} className="bg-[#0a0c10]">
                         {opt}
                       </option>
