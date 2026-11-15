@@ -1,2 +1,5 @@
 [functions.prospect-email]
 verify_jwt = false
+
+[functions.application-email]
+verify_jwt = false
