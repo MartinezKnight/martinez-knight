@@ -80,7 +80,7 @@ function ScrollManager() {
 
 function App() {
   return (
-    <BrowserRouter basename="/martinez-knight">
+    <BrowserRouter>
       <div id="top" className="relative min-h-screen bg-bg" style={{ overflowX: "clip" }}>
         <NoiseFilter />
         <Nav />
