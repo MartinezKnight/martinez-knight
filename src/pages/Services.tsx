@@ -19,7 +19,7 @@ export default function Services() {
         <p className="text-white/60 max-w-2xl text-base sm:text-lg leading-relaxed mb-16 md:mb-20">
           Every service below is built to talk to the others. Your website, CRM,
           automation and marketing aren't separate projects run by separate
-          vendors — they're one system with six moving parts, built and run by
+          vendors. We bring the moving parts together into one system, built and managed by
           one team.
         </p>
       </FadeIn>
