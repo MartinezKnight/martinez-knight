@@ -115,3 +115,19 @@ img[alt*="client"]:hover,
   filter: grayscale(0%);
   opacity: 1;
 }
+
+
+/* Responsive viewport safeguards for narrow mobile screens. */
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+img, svg, video, canvas {
+  max-width: 100%;
+}
+@media (max-width: 640px) {
+  body { overflow-x: hidden; }
+  #root { overflow-x: clip; }
+  h1, h2, h3 { overflow-wrap: anywhere; }
+}
