@@ -10,8 +10,8 @@ const LINKS = [
   { to: "/about", label: "About Us" },
   { to: "/blog", label: "Blog" },
   { to: "/career", label: "Career" },
-  { to: "/contact", label: "Contact Us" },
   { to: "/business-discovery", label: "Business Growth" },
+  { to: "/contact", label: "Contact Us" },
 ];
 
 export default function Nav() {
