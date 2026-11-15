@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ChevronRight, LayoutDashboard, Users, Mail, Zap, TrendingUp, Search, Bell } from "lucide-react";
+import { ChevronRight, LayoutDashboard, Users, Mail, Zap, Search, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import HeroWave from "./HeroWave";
 import SectionHeading from "./SectionHeading";
@@ -12,16 +12,16 @@ const NAV = [
 ];
 
 const STATS = [
-  { label: "New leads (30d)", value: "142", delta: "+18%" },
-  { label: "Site uptime", value: "99.98%", delta: "0 downtime" },
-  { label: "Automated tasks", value: "3,204", delta: "this month" },
+  { label: "Digital presence", value: "Websites", delta: "Design, build and support" },
+  { label: "Business operations", value: "Connected", delta: "CRM, workflows and automation" },
+  { label: "Business growth", value: "Measurable", delta: "Marketing, insights and reporting" },
 ];
 
 const ACTIVITY = [
-  { who: "Website", what: "New contact form submission — Adaeze O.", time: "2m" },
-  { who: "CRM", what: "Deal moved to \"Proposal Sent\" — Kadtech renewal", time: "18m" },
-  { who: "Automation", what: "Welcome sequence sent to 12 new leads", time: "1h" },
-  { who: "Hosting", what: "SSL certificate auto-renewed", time: "3h" },
+  { who: "Capture", what: "Website enquiries and lead forms", time: "01" },
+  { who: "Organise", what: "CRM records and customer information", time: "02" },
+  { who: "Automate", what: "Follow-ups and routine workflows", time: "03" },
+  { who: "Improve", what: "Reporting, insights and optimisation", time: "04" },
 ];
 
 export default function Hero() {
@@ -53,9 +53,9 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
             <SectionHeading>
-              Your business.
+              Digital systems.
               <br />
-              <span className="shiny-text">Systemized.</span>
+              <span className="shiny-text">Built around your business.</span>
             </SectionHeading>
           </motion.div>
 
@@ -65,7 +65,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.35 }}
             className="mt-8 text-white/60 max-w-md mx-auto lg:mx-0 text-base lg:text-lg leading-[1.6]"
           >
-            Martinez Knight designs, builds and manages the digital systems your business depends on. Websites, hosting, CRM, automation and marketing work together, supported by one team.
+            We bring your website, business technology, automation and digital marketing together. One team helps you build the systems you need, manage them and make them work better for your business.
           </motion.p>
 
           <motion.div
@@ -89,7 +89,7 @@ export default function Hero() {
                 See Our Work
               </Link>
             </div>
-            <span className="text-xs text-white/40">Digital infrastructure for growing businesses, wherever you are</span>
+            <span className="text-xs text-white/40">A practical technology partner for ambitious businesses</span>
           </motion.div>
         </div>
 
@@ -106,7 +106,7 @@ export default function Hero() {
               <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
               <span className="w-3 h-3 rounded-full bg-[#28c840]" />
             </div>
-            <span className="text-xs text-white/50 mx-auto -translate-x-3">app.martinezknight.com/dashboard</span>
+            <span className="text-xs text-white/50 mx-auto -translate-x-3">Illustrative systems overview</span>
           </div>
 
           <div className="grid grid-cols-12 min-h-[420px]">
@@ -141,7 +141,7 @@ export default function Hero() {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <p className="text-white text-sm font-semibold">Overview</p>
-                  <p className="text-white/40 text-xs mt-0.5">Everything your business runs on, one screen.</p>
+                  <p className="text-white/40 text-xs mt-0.5">An overview of how your business systems connect.</p>
                 </div>
                 <div className="hidden sm:flex items-center gap-3 text-white/40">
                   <Search size={16} />
@@ -153,17 +153,14 @@ export default function Hero() {
                 {STATS.map((s) => (
                   <div key={s.label} className="liquid-glass rounded-xl p-4">
                     <p className="text-white/45 text-[11px] uppercase tracking-wide mb-2">{s.label}</p>
-                    <p className="text-white text-2xl font-semibold">{s.value}</p>
-                    <p className="text-[#00d4e8] text-xs mt-1 flex items-center gap-1">
-                      <TrendingUp size={12} />
-                      {s.delta}
-                    </p>
+                    <p className="text-white text-xl font-semibold">{s.value}</p>
+                    <p className="text-white/55 text-xs mt-2 leading-relaxed">{s.delta}</p>
                   </div>
                 ))}
               </div>
 
               <div className="liquid-glass rounded-xl p-4 sm:p-5">
-                <p className="text-white/45 text-[11px] uppercase tracking-wide mb-3">Live activity</p>
+                <p className="text-white/45 text-[11px] uppercase tracking-wide mb-3">A connected workflow</p>
                 <div className="flex flex-col divide-y divide-white/5">
                   {ACTIVITY.map((a) => (
                     <div key={a.what} className="flex items-center justify-between gap-4 py-2.5">
