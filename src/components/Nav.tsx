@@ -10,6 +10,7 @@ const LINKS = [
   { to: "/about", label: "About Us" },
   { to: "/blog", label: "Blog" },
   { to: "/career", label: "Career" },
+  { to: "/business-discovery", label: "Business Growth" },
   { to: "/contact", label: "Contact Us" },
 ];
 
