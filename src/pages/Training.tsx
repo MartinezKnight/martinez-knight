@@ -246,7 +246,7 @@ export default function Training() {
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-white text-2xl sm:text-3xl font-semibold mb-4">Ready to start?</h2>
           <p className="text-white/60 text-sm sm:text-base mb-8">
-            Tell us who you are and what you want to learn — we'll follow up with next steps.
+            Tell us who you are and what you want to learn. We will follow up with the next steps.
           </p>
           <Link
             to="/training/apply"
