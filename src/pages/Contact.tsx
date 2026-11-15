@@ -65,7 +65,7 @@ export default function Contact() {
         phone: form.phone.trim(),
         industry: "Not provided",
         location: "Not provided",
-        source: "Website contact form — " + enquirySource,
+        source: "Website contact form: " + enquirySource,
         consent: form.consent ? "yes" : "no",
         contactForm: { ...form, consent: form.consent },
         mainPriority: form.interest || "General enquiry",
@@ -126,25 +126,26 @@ export default function Contact() {
         </div>
       </FadeIn>
 
-      {/* social row */}
+      {/* labelled social profiles */}
       <FadeIn delay={0.1}>
-        <div className="flex items-center justify-center gap-5 mb-20">
-          {SOCIALS.map((s) => {
-            const Icon = SOCIAL_ICONS[s.name];
-            return (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.name}
-                className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:text-cyan hover:border-cyan/40 transition-colors"
-              >
-                <Icon size={16} />
-              </a>
-            );
-          })}
-        </div>
+        <section aria-labelledby="social-profiles-heading" className="mx-auto mb-20 max-w-3xl">
+          <div className="mb-5 text-center">
+            <h2 id="social-profiles-heading" className="text-white text-lg font-semibold">Connect with Martinez Knight</h2>
+            <p className="mt-2 text-sm text-white/50">Follow our work, updates and company news on social media.</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {SOCIALS.map((s) => {
+              const Icon = SOCIAL_ICONS[s.name];
+              return (
+                <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}
+                  className="group flex min-h-16 items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/[.025] px-4 py-4 text-white/75 transition-colors hover:border-cyan/40 hover:bg-cyan/[.06] hover:text-white">
+                  <Icon size={18} className="shrink-0 text-cyan" />
+                  <span className="text-sm font-medium">{s.name === "X" ? "X (Twitter)" : s.name}</span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
       </FadeIn>
 
       {/* lead form */}
