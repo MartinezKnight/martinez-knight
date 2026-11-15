@@ -53,7 +53,13 @@ function Footer() {
         <Link to="/contact" className="hover:text-cyan transition-colors">FAQ</Link>
         <Link to="/sitemap" className="hover:text-cyan transition-colors">Sitemap</Link>
       </div>
-      <span>Martinez Knight — Digital Infrastructure &amp; Business Transformation Company</span>
+      <div className="flex items-center gap-2 text-white/30">
+        <span>Martinez Knight — Digital Infrastructure &amp; Business Transformation Company</span>
+        <span aria-hidden="true">·</span>
+        <Link to="/internal/prospects" className="inline-flex items-center gap-1 hover:text-cyan transition-colors" aria-label="Admin sign in">
+          Admin Sign In
+        </Link>
+      </div>
     </footer>
   );
 }
