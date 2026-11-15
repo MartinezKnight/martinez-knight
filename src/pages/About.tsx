@@ -88,8 +88,8 @@ const DIVISIONS = [
   {
     icon: Code2,
     name: "Martinez Knight Technology & Designs",
-    tag: "This website — subsidiary, est. 2021",
-    desc: "IT and digital transformation services from our base at 30 Agadez Crescent, Aminu Kano Crescent, Wuse 2, Abuja. Everything else on this site — Services, Work, Training — belongs to this division.",
+    tag: "Technology division, established 2021",
+    desc: "IT and digital transformation services based in Wuse 2, Abuja. The Services, Work and Training sections of this website are part of this division.",
     services: [
       "Web & Mobile App Development",
       "IT Infrastructure Management",
