@@ -21,7 +21,7 @@ const TRACK_OPTIONS: { value: string; label: string }[] = [
   { value: "foundation", label: "3-Month Foundation Track" },
   { value: "professional", label: "6-Month Professional Track" },
   { value: "unsure", label: "Not sure yet" },
-  { value: "corporate", label: "N/A — this is for corporate team training" },
+  { value: "corporate", label: "Not applicable. This is for corporate team training" },
 ];
 
 const EDUCATION_LEVELS = ["Currently in school", "Undergraduate", "Graduate", "Postgraduate", "Other"];
