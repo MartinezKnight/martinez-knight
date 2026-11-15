@@ -1,20 +1,37 @@
-# Prospect email notifications — activation checklist
+# Activate prospect email notifications with your existing Gmail account
 
-The website already stores discovery submissions in `public.prospects`. This email handler is designed to run from a Supabase Database Webhook after each new row is inserted. It sends:
-- An internal notification to the Martinez Knight admin inbox, with the lead details and a link to the private pipeline.
-- An acknowledgement email to the prospect, confirming receipt and explaining that the team will review their requirements and follow up.
+The public form already saves each submission to the Supabase `prospects` table. This email workflow uses the Gmail account you already control, through Google Apps Script, so **you do not need a custom domain, business webmail, or a Resend account**.
 
-## Important: what is and is not live yet
+When activated, each new form submission triggers:
+- An internal alert to your admin inbox, including the prospect's details and a link to the private pipeline.
+- An acknowledgement email to the prospect, confirming receipt and explaining that Martinez Knight will review their requirements and follow up.
 
-The source code is included in this repository, but email delivery will not begin until the Edge Function is deployed, the email provider is configured, and the database webhook is created. No email provider account or sending-domain credentials were available to configure from this repository.
+## What is included in this repository
 
-## 1. Email sender requirement
+- `supabase/functions/prospect-email/index.ts`: secure Supabase webhook handler.
+- `supabase/google-apps-script/Code.gs`: Gmail sender that runs under your Google account.
+- `supabase/config.toml`: Edge Function configuration.
 
-This implementation uses Resend. Resend's test sender `onboarding@resend.dev` is restricted to test messages sent to the email address associated with your Resend account. To send acknowledgements to real prospects, you need a domain verified in Resend and an address on that domain for `EMAIL_FROM`.
+Email sending is **not active yet**. The Google Apps Script must be deployed, the function deployed, secrets added, and the database webhook created. The website form and database continue to work while this is being configured.
 
-You do not need to purchase web hosting or move the website. A domain can be used only for email authentication while the website remains on GitHub Pages. If you are not ready to register/use a domain, leave email sending inactive for now; the form and prospect database continue to work.
+## Step 1 — Create the Google mailer
 
-## 2. Deploy the Edge Function
+1. Sign in to the Google account you want Martinez Knight emails to come from. The existing inbox noted for this setup is `martinezknighthrmc@gmail.com`; use it if you still have access, or use another Gmail account you control.
+2. Open [Google Apps Script](https://script.google.com/) and create a **New project**.
+3. Delete the starter code and paste the complete contents of `supabase/google-apps-script/Code.gs` from this repository.
+4. Replace `REPLACE_WITH_A_LONG_RANDOM_SECRET` in the code with a long random value. Keep it private; you will enter the exact same value in Supabase in Step 3.
+5. Save the project with a name such as **Martinez Knight Prospect Mailer**.
+
+## Step 2 — Deploy the Google mailer as a Web App
+
+1. In Apps Script, select **Deploy → New deployment**.
+2. Click the gear icon and choose **Web app**.
+3. Set **Execute as** to **Me** (your Google account).
+4. Set **Who has access** to **Anyone**. The script itself checks the private shared secret before sending any email.
+5. Click **Deploy** and complete Google's authorisation prompts. Google may show an unverified-app warning because this is your own script; review that it is the script you just created before authorising.
+6. Copy the Web App URL ending in `/exec`. Do not share the secret or URL publicly.
+
+## Step 3 — Deploy the Supabase Edge Function
 
 From the repository root, after installing the Supabase CLI and signing in:
 
@@ -24,22 +41,20 @@ supabase link --project-ref fpzpjhlwnaatvvcwzntr
 supabase functions deploy prospect-email
 ```
 
-The function configuration in `supabase/config.toml` disables JWT verification because the database webhook authenticates with its own shared secret header. The function checks that header before processing any event.
-
-## 3. Add function secrets
+## Step 4 — Add Supabase Function Secrets
 
 In Supabase Dashboard → Project → Edge Functions → Secrets, add:
 
 | Name | Value |
 |---|---|
-| `RESEND_API_KEY` | API key created in your Resend account |
-| `EMAIL_FROM` | A sender address on your Resend-verified domain, e.g. `Martinez Knight <notifications@your-verified-domain>` |
-| `ADMIN_NOTIFICATION_EMAIL` | `martinezknighthrmc@gmail.com` (the existing business inbox; change if you prefer another inbox) |
-| `WEBHOOK_SECRET` | A long, random secret string that you create; use the exact same value in the webhook header |
+| `GOOGLE_APPS_SCRIPT_URL` | The Web App URL copied in Step 2, ending in `/exec` |
+| `GOOGLE_APPS_SCRIPT_SECRET` | The exact random secret you placed in `Code.gs` |
+| `ADMIN_NOTIFICATION_EMAIL` | The Gmail inbox where you want to receive lead alerts; use `martinezknighthrmc@gmail.com` if that is still your preferred inbox |
+| `WEBHOOK_SECRET` | A second, different long random secret for the Supabase database webhook |
 
-Keep the Resend API key and webhook secret in Supabase Function Secrets only. Never place them in website code or GitHub frontend variables.
+Keep these secrets in Supabase Function Secrets only. Never put them in the website code, public repository files, or GitHub frontend variables. The Apps Script source contains a placeholder only; replace it privately in your own Apps Script editor.
 
-## 4. Create the database webhook
+## Step 5 — Create the Supabase Database Webhook
 
 In Supabase Dashboard → Database → Webhooks → Create a new webhook:
 
@@ -49,24 +64,27 @@ In Supabase Dashboard → Database → Webhooks → Create a new webhook:
 4. Type: **Supabase Edge Functions**.
 5. Function: `prospect-email`.
 6. Method: `POST`.
-7. Add header `x-webhook-secret` with the exact `WEBHOOK_SECRET` value from Step 3.
+7. Add header `x-webhook-secret` with the exact `WEBHOOK_SECRET` value from Step 4.
 8. Save the webhook.
 
-The handler ignores non-INSERT events and validates the webhook secret before sending email.
+The Edge Function validates this header before forwarding the event to Google Apps Script. Apps Script separately validates its own secret before sending.
 
-## 5. Test the full workflow
+## Step 6 — Test the complete process
 
-Submit one clearly labelled test record through the public discovery form using an email inbox you can access. Confirm:
+Submit one clearly labelled test entry through the public form using an email inbox you can access. Confirm:
+
 - The row appears in Supabase Table Editor → `prospects`.
-- The internal inbox receives the new-prospect alert.
+- Your admin Gmail inbox receives the new-prospect alert.
 - The test prospect inbox receives the acknowledgement.
 - The private pipeline shows the same record after administrator sign-in.
 
-If Resend reports an unverified sender, verify the sending domain and use an address on that domain in `EMAIL_FROM`. If the database row exists but email fails, the lead is still safely stored; check Supabase Edge Function logs and Resend logs.
+Google Apps Script executions and errors can be reviewed in the Apps Script **Executions** panel. The Gmail account is subject to Google's sending limits and anti-abuse policies; avoid bulk or unsolicited email.
+
+If the database row is present but an email does not arrive, the lead itself is still stored. Check Apps Script → Executions and Supabase Edge Function logs.
 
 ## Public and private routes
 
 - Public form: https://martinezknight.github.io/martinez-knight/business-discovery
 - Private admin sign-in: https://martinezknight.github.io/martinez-knight/internal/prospects
 
-The footer's **Admin Sign In** link only opens the sign-in route. It does not expose prospect records; the dashboard continues to require an authorised Supabase Auth account and the existing Row Level Security policies.
+The footer's **Admin Sign In** link only opens the sign-in route. It does not expose prospect records; the dashboard still requires an authorised Supabase Auth account and the existing Row Level Security policies.
