@@ -65,9 +65,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.35 }}
             className="mt-8 text-white/60 max-w-md mx-auto lg:mx-0 text-base lg:text-lg leading-[1.6]"
           >
-            Martinez Knight designs, builds and runs the websites, hosting, CRM,
-            automation and marketing systems your business runs on — as one
-            connected system, by one team.
+            Martinez Knight designs, builds and manages the digital systems your business depends on. Websites, hosting, CRM, automation and marketing work together, supported by one team.
           </motion.p>
 
           <motion.div
