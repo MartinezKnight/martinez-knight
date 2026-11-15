@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Phone, MessageCircle, MapPin, Sparkles, CheckCircle2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import { Phone, MessageCircle, MapPin, CheckCircle2, ArrowRight } from "lucide-react";
 import FadeIn from "../components/FadeIn";
 import SectionHeading from "../components/SectionHeading";
 import { SOCIALS } from "../data/socials";
@@ -25,77 +25,23 @@ const AREAS_OF_INTEREST = [
   "Something Else",
 ];
 
-const FAQS = [
-  {
-    q: "What does \"Digital Infrastructure & Business Transformation\" actually mean?",
-    a: "It means we don't just build you a website and disappear. We build and run the whole system your business operates on — website, hosting, business email, CRM, automation, SEO and support — as one connected package, not six separate vendors who don't talk to each other.",
-  },
-  {
-    q: "How much does a typical engagement cost?",
-    a: "Depends entirely on scope. Book a consult and we'll give you a real number, not a range.",
-  },
-  {
-    q: "How long does a project take?",
-    a: "A standard website and infrastructure setup typically takes 2–6 weeks from kickoff. Automation and systems work varies more with scope. We'll give you a specific timeline before any work starts.",
-  },
-  {
-    q: "Do you only work with hotels and hospitality businesses?",
-    a: "No. Hospitality is one of our strongest sectors — see Elpazio in our Work section — but we also work with real estate, spas, architecture and construction firms, retail, logistics, and technology companies.",
-  },
-  {
-    q: "Do you offer ongoing support after launch, or just the build?",
-    a: "Ongoing support is core to how we work — most engagements include a monthly retainer for hosting, technical support, updates and maintenance. We don't disappear after handover.",
-  },
-  {
-    q: "I already have a website. Can you just take over hosting/email/CRM?",
-    a: "Yes. We regularly migrate existing infrastructure to a more stable, unified setup — see how we handled Elpazio's zero-downtime migration in our Work section.",
-  },
-  {
-    q: "Can you train our team instead of just building the system for us?",
-    a: "Yes — Training & Professional Development is one of our core service lines. See the Training page for courses and tracks.",
-  },
-];
-
-function FAQItem({ q, a, index }: { q: string; a: string; index: number }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <FadeIn delay={index * 0.04}>
-      <div className="border-b border-white/10 py-6">
-        <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between gap-6 text-left">
-          <span className="text-white text-base font-medium">{q}</span>
-          <motion.span animate={{ rotate: open ? 45 : 0 }} className="text-cyan text-2xl flex-shrink-0">
-            +
-          </motion.span>
-        </button>
-        <AnimatePresence initial={false}>
-          {open && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{ overflow: "hidden" }}
-            >
-              <p className="text-white/60 leading-relaxed pt-4 max-w-2xl">{a}</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </FadeIn>
-  );
-}
-
 export default function Contact() {
   useTitle("Contact Us");
+  const [searchParams] = useSearchParams();
+  const requestedService = searchParams.get("service") || "";
+  const enquirySource = searchParams.get("source") || "website-contact";
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     company: "",
-    interest: AREAS_OF_INTEREST[0],
+    interest: requestedService || AREAS_OF_INTEREST[0],
     message: "",
     consent: false,
   });
+  useEffect(() => {
+    if (requestedService) setForm((current) => ({ ...current, interest: requestedService }));
+  }, [requestedService]);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
 
@@ -116,9 +62,9 @@ export default function Contact() {
         phone: form.phone.trim(),
         industry: form.interest,
         location: "Not provided",
-        source: "Website contact form",
-        consent: "yes",
-        contactForm: { ...form, consent: "yes" },
+        source: "Website contact form — " + enquirySource,
+        consent: form.consent ? "yes" : "no",
+        contactForm: { ...form, consent: form.consent },
         mainPriority: form.interest,
         otherNotes: form.message.trim(),
       });
@@ -142,7 +88,7 @@ export default function Contact() {
           <span className="italic font-light">Your Business Runs On.</span>
         </SectionHeading>
         <p className="text-center text-white/60 max-w-md mx-auto mb-10 text-sm leading-relaxed">
-          Tell us what you need and we'll follow up with next steps.
+          A direct line to our team for service enquiries, partnerships and general questions. Share the essentials and we will respond with a clear next step.
         </p>
       </FadeIn>
 
@@ -194,9 +140,9 @@ export default function Contact() {
       </FadeIn>
 
       {/* lead form */}
-      <div className="max-w-xl mx-auto mb-16">
+      <div className="max-w-2xl mx-auto mb-16">
         <FadeIn delay={0}>
-          <div className="liquid-glass rounded-2xl p-6 sm:p-10">
+          <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-10 shadow-2xl shadow-black/20">
             {status === "sent" ? (
               <div className="text-center py-10">
                 <CheckCircle2 size={40} className="text-cyan mx-auto mb-4" />
@@ -205,7 +151,7 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <h3 className="text-white text-lg font-semibold">Tell us about your project</h3>
+                <div className="mb-2"><p className="mb-2 text-xs uppercase tracking-[.22em] text-cyan">Start a conversation</p><h3 className="text-white text-2xl font-semibold">How can we help?</h3><p className="mt-2 text-sm text-white/45">This is a short enquiry form, not the full business assessment.</p></div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <label className="flex flex-col gap-1.5">
                     <span className="text-white/50 text-xs uppercase tracking-wide">Full Name</span>
@@ -249,7 +195,7 @@ export default function Contact() {
                   </label>
                 </div>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-white/50 text-xs uppercase tracking-wide">Area of Interest</span>
+                  <span className="text-white/50 text-xs uppercase tracking-wide">Service / area of interest</span>
                   <select
                     value={form.interest}
                     onChange={(e) => setForm({ ...form, interest: e.target.value })}
@@ -279,7 +225,7 @@ export default function Contact() {
                 </label>
                 {status === "error" && <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-200">{error}</p>}
                 <button type="submit" disabled={status === "sending"} className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors disabled:opacity-50">
-                  {status === "sending" ? "Submitting..." : "Send Enquiry"}
+                  {status === "sending" ? "Submitting..." : "Send Enquiry"} <ArrowRight size={16} />
                 </button>
               </form>
             )}
@@ -287,41 +233,11 @@ export default function Contact() {
         </FadeIn>
       </div>
 
-      {/* collaborate callout */}
-      <div className="max-w-xl mx-auto mb-24">
-        <FadeIn delay={0.1}>
-          <a
-            href="https://app.notion.com/p/22bcef2b2d2d80dca632df41ba3d41a8?pvs=21"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block liquid-glass rounded-2xl p-6 hover:border-cyan/30 transition-colors"
-          >
-            <div className="flex items-start gap-4">
-              <div className="w-11 h-11 rounded-xl bg-cyan/10 flex items-center justify-center flex-shrink-0">
-                <Sparkles size={20} className="text-cyan" />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-sm sm:text-base mb-1">Want to collaborate?</p>
-                <p className="text-white/55 text-sm leading-relaxed">
-                  If you're building something bold and need a strategist, marketer, or product
-                  architect who understands both people and systems —{" "}
-                  <span className="text-cyan group-hover:underline">let's talk</span>.
-                </p>
-              </div>
-            </div>
-          </a>
-        </FadeIn>
-      </div>
-
-      {/* FAQ */}
-      <div className="max-w-3xl mx-auto">
-        <FadeIn delay={0}>
-          <p className="text-center text-white/40 text-xs uppercase tracking-widest mb-2">Questions</p>
-          <h2 className="text-center text-white text-2xl font-semibold mb-10">Frequently Asked</h2>
-        </FadeIn>
-        {FAQS.map((f, i) => (
-          <FAQItem key={f.q} q={f.q} a={f.a} index={i} />
-        ))}
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="text-sm text-white/55">Looking for a more detailed assessment of your organisation?</p>
+        <Link to="/business-discovery" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:text-white transition-colors">
+          Explore Business Growth &amp; Discovery <ArrowRight size={15} />
+        </Link>
       </div>
     </div>
   );
