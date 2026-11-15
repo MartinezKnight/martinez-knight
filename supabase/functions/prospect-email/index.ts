@@ -35,7 +35,7 @@ Deno.serve(async (request) => {
     const challenge = Array.isArray(form.challenges) ? form.challenges.join(", ") : clean(form.challenges);
     const priority = clean(form.mainPriority);
     const outcomes = Array.isArray(form.desiredOutcomes) ? form.desiredOutcomes.join(", ") : clean(form.desiredOutcomes);
-    const dashboardUrl = "https://martinezknight.github.io/martinez-knight/internal/prospects";
+    const dashboardUrl = "https://martinezknight.com/internal/prospects";
     const email = String(lead.email ?? "").trim();
 
     const internalText = [
