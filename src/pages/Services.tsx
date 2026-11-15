@@ -59,7 +59,7 @@ export default function Services() {
 
       <FadeIn delay={0.1}>
         <div className="max-w-5xl mx-auto mt-16 flex justify-center">
-          <ContactButton label="Book a Free Consult" />
+          <ContactButton label="Discuss a Service" href="/contact?source=services-overview" />
         </div>
       </FadeIn>
     </div>
