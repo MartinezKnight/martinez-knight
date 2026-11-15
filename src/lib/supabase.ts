@@ -1,6 +1,7 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 const SESSION_KEY = "mk_pipeline_session";
+const REFRESH_KEY = "mk_pipeline_refresh";
 
 export type Lead = {
   id: string;
@@ -37,10 +38,34 @@ function sessionToken() {
   return sessionStorage.getItem(SESSION_KEY);
 }
 
+async function refreshAccessToken() {
+  const { url, key } = config();
+  const refreshToken = sessionStorage.getItem(REFRESH_KEY);
+  if (!refreshToken) {
+    signOut();
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const response = await fetch(`${url}/auth/v1/token?grant_type=refresh_token`, {
+    method: "POST",
+    headers: { apikey: key, "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh_token: refreshToken }),
+  });
+  const data = await response.json();
+  if (!response.ok || !data.access_token || !data.refresh_token) {
+    signOut();
+    throw new Error(data.msg || data.message || "Your session has expired. Please sign in again.");
+  }
+
+  sessionStorage.setItem(SESSION_KEY, data.access_token);
+  sessionStorage.setItem(REFRESH_KEY, data.refresh_token);
+  return data.access_token as string;
+}
+
 async function request(path: string, options: RequestInit = {}, authenticated = false) {
   const { url, key } = config();
-  const token = authenticated ? sessionToken() : null;
-  const response = await fetch(`${url}${path}`, {
+
+  const send = (token: string | null) => fetch(`${url}${path}`, {
     ...options,
     headers: {
       apikey: key,
@@ -49,10 +74,17 @@ async function request(path: string, options: RequestInit = {}, authenticated = 
       ...(options.headers || {}),
     },
   });
+
+  let response = await send(authenticated ? sessionToken() : null);
+  if (authenticated && response.status === 401 && sessionStorage.getItem(REFRESH_KEY)) {
+    const freshToken = await refreshAccessToken();
+    response = await send(freshToken);
+  }
+
   const body = await response.text();
   if (!response.ok) {
     let message = body || "Request failed.";
-    try { message = JSON.parse(body).message || JSON.parse(body).msg || message; } catch { /* keep response */ }
+    try { const parsed = JSON.parse(body); message = parsed.message || parsed.msg || message; } catch { /* keep response */ }
     throw new Error(message);
   }
   return body ? JSON.parse(body) : null;
@@ -88,11 +120,13 @@ export async function signIn(email: string, password: string) {
   const data = await response.json();
   if (!response.ok) throw new Error(data.msg || data.message || "Unable to sign in.");
   sessionStorage.setItem(SESSION_KEY, data.access_token);
+  sessionStorage.setItem(REFRESH_KEY, data.refresh_token);
   return data.user;
 }
 
 export function signOut() {
   sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(REFRESH_KEY);
 }
 
 export function hasSession() {
