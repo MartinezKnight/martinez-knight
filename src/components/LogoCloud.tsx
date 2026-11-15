@@ -42,7 +42,7 @@ export default function LogoCloud() {
   return (
     <section className="py-16 md:py-20">
       <p className="text-center text-xs uppercase tracking-widest text-white/40 mb-10 px-5">
-        Real businesses running on systems we built
+        Selected clients and organisations we've worked with
       </p>
 
       <div
