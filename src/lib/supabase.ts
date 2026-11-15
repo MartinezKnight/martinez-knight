@@ -152,3 +152,15 @@ export async function createLead(data: Partial<Lead>) {
     body: JSON.stringify(data),
   }, true);
 }
+
+const PUBLIC_APPLICATION_TABLES = ["candidate_applications", "training_applications"] as const;
+type PublicApplicationTable = typeof PUBLIC_APPLICATION_TABLES[number];
+
+export async function submitApplication(table: PublicApplicationTable, data: Record<string, unknown>) {
+  if (!PUBLIC_APPLICATION_TABLES.includes(table)) throw new Error("Unsupported application type.");
+  return request(`/rest/v1/${table}`, {
+    method: "POST",
+    headers: { Prefer: "return=minimal" },
+    body: JSON.stringify(data),
+  });
+}
