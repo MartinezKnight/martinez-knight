@@ -47,6 +47,7 @@ export default function Sitemap() {
               { to: "/services", label: "Services" },
               { to: "/blog", label: "Blog" },
               { to: "/career", label: "Career" },
+              { to: "/business-discovery", label: "Business Growth & Discovery" },
               { to: "/contact", label: "Contact Us (incl. FAQ)" },
             ]}
           />
