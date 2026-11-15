@@ -24,8 +24,8 @@ export default function SectionHeading({
   const face = variant === "dark" ? "hero-heading font-serif" : "light-heading";
   return (
     <Tag
-      className={`${face} font-black uppercase leading-[0.95] tracking-tight break-words ${className}`}
-      style={{ fontSize: "clamp(2.2rem, 7vw, 5.5rem)" }}
+      className={`${face} font-semibold normal-case leading-[1.08] tracking-[-0.035em] break-words ${className}`}
+      style={{ fontSize: "clamp(2rem, 4.6vw, 4.25rem)" }}
     >
       {children}
     </Tag>
