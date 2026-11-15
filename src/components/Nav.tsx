@@ -10,6 +10,7 @@ const LINKS = [
   { to: "/about", label: "About Us" },
   { to: "/blog", label: "Insights" },
   { to: "/career", label: "Careers" },
+  { to: "/business-discovery", label: "Business Growth" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -105,7 +106,8 @@ export default function Nav() {
               </AnimatePresence>
             </div>
 
-            <Link to="/work" className={`text-sm font-medium transition-colors ${isActive("/work") || location.pathname.startsWith("/work/") ? "text-white" : "text-white/70 hover:text-white"}`}>Work</Link>\n            {LINKS.slice(2).map((l) => (
+            <Link to="/work" className={`text-sm font-medium transition-colors ${isActive("/work") || location.pathname.startsWith("/work/") ? "text-white" : "text-white/70 hover:text-white"}`}>Work</Link>
+            {LINKS.slice(2).map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
@@ -119,14 +121,6 @@ export default function Nav() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <Link
-              to="/business-discovery"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-white text-black text-sm font-medium px-5 py-2.5 transition-all hover:bg-white/90 active:scale-[0.98]"
-            >
-              Get Started
-              <ChevronRight size={14} />
-            </Link>
-
             <Link to="/internal/prospects" aria-label="Admin sign in" title="Admin sign in" className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-2 text-xs text-white/65 hover:text-cyan hover:border-cyan/40 transition-colors">
               <LockKeyhole size={13} /> Admin
             </Link>
@@ -212,14 +206,6 @@ export default function Nav() {
             ))}
             <Link to="/internal/prospects" onClick={() => setOpen(false)} className="mt-2 flex items-center gap-2 border-t border-white/10 py-3 text-sm text-white/65">
               <LockKeyhole size={15} /> Admin Sign In
-            </Link>
-            <Link
-              to="/business-discovery"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-white text-black text-sm font-medium px-5 py-3"
-            >
-              Get Started
-              <ChevronRight size={14} />
             </Link>
           </motion.div>
         )}
