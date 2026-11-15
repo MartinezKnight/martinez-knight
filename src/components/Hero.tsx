@@ -78,10 +78,10 @@ export default function Hero() {
           >
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <Link
-                to="/contact"
+                to="/contact?source=homepage-hero"
                 className="inline-flex items-center gap-1.5 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 transition-all hover:bg-white/90 active:scale-[0.98]"
               >
-                Start Your Project
+                Discuss Your Project
                 <ChevronRight size={16} />
               </Link>
               <Link
