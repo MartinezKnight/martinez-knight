@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Phone, MessageCircle, MapPin, CheckCircle2, ArrowRight } from "lucide-react";
+import { Phone, MessageCircle, Mail, MapPin, CheckCircle2, ArrowRight } from "lucide-react";
 import FadeIn from "../components/FadeIn";
 import SectionHeading from "../components/SectionHeading";
 import { SOCIALS } from "../data/socials";
@@ -97,7 +97,7 @@ export default function Contact() {
 
       {/* quick channels */}
       <FadeIn delay={0.08}>
-        <div className="max-w-2xl mx-auto grid sm:grid-cols-3 gap-6 mb-16">
+        <div className="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 mb-16">
           <a href="tel:+2347039148743" className="text-center hover:opacity-80 transition-opacity">
             <Phone size={20} className="text-cyan mx-auto mb-3" />
             <p className="text-white/40 text-xs uppercase tracking-widest mb-1.5">Call</p>
@@ -112,6 +112,11 @@ export default function Contact() {
             <MessageCircle size={20} className="text-cyan mx-auto mb-3" />
             <p className="text-white/40 text-xs uppercase tracking-widest mb-1.5">WhatsApp</p>
             <p className="text-white text-sm font-medium">Chat with us</p>
+          </a>
+          <a href="mailto:martinezknighthrmc@gmail.com" className="text-center hover:opacity-80 transition-opacity">
+            <Mail size={20} className="text-cyan mx-auto mb-3" />
+            <p className="text-white/40 text-xs uppercase tracking-widest mb-1.5">Email</p>
+            <p className="text-white text-sm font-medium break-all">martinezknighthrmc@gmail.com</p>
           </a>
           <div className="text-center">
             <MapPin size={20} className="text-cyan mx-auto mb-3" />
@@ -158,79 +163,39 @@ export default function Contact() {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <label className="flex flex-col gap-1.5">
                     <span className="text-white/50 text-xs uppercase tracking-wide">Full Name</span>
-                    <input
-                      required
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className={inputCls}
-                      placeholder="Your name"
-                    />
+                    <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputCls} placeholder="Your name" />
                   </label>
                   <label className="flex flex-col gap-1.5">
                     <span className="text-white/50 text-xs uppercase tracking-wide">Email</span>
-                    <input
-                      required
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className={inputCls}
-                      placeholder="you@email.com"
-                    />
+                    <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputCls} placeholder="you@email.com" />
                   </label>
                   <label className="flex flex-col gap-1.5">
                     <span className="text-white/50 text-xs uppercase tracking-wide">Phone / WhatsApp</span>
-                    <input
-                      required
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className={inputCls}
-                      placeholder="080..."
-                    />
+                    <input required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputCls} placeholder="080..." />
                   </label>
                   <label className="flex flex-col gap-1.5">
                     <span className="text-white/50 text-xs uppercase tracking-wide">Company / Organization</span>
-                    <input
-                      value={form.company}
-                      onChange={(e) => setForm({ ...form, company: e.target.value })}
-                      className={inputCls}
-                      placeholder="Your company"
-                    />
+                    <input value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputCls} placeholder="Your company" />
                   </label>
                 </div>
                 <label className="flex flex-col gap-1.5">
                   <span className="text-white/50 text-xs uppercase tracking-wide">What would you like to discuss?</span>
-                  <select
-                    required
-                    value={form.interest}
-                    onChange={(e) => setForm({ ...form, interest: e.target.value })}
-                    className={inputCls}
-                  >
+                  <select required value={form.interest} onChange={(e) => setForm({ ...form, interest: e.target.value })} className={inputCls}>
                     <option value="" className="bg-[#0a0c10]">Select a service or enquiry type</option>
-                    {interestOptions.map((opt) => (
-                      <option key={opt} value={opt} className="bg-[#0a0c10]">
-                        {opt}
-                      </option>
-                    ))}
+                    {interestOptions.map((opt) => <option key={opt} value={opt} className="bg-[#0a0c10]">{opt}</option>)}
                   </select>
                 </label>
                 <label className="flex flex-col gap-1.5">
                   <span className="text-white/50 text-xs uppercase tracking-wide">Brief description of your requirement</span>
-                  <textarea
-                    required
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    rows={4}
-                    className={`${inputCls} resize-none`}
-                    placeholder="Tell us what you need"
-                  />
+                  <textarea required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={4} className={`${inputCls} resize-none`} placeholder="Tell us what you need" />
                 </label>
                 <label className="flex items-start gap-3 text-xs leading-5 text-white/55">
                   <input type="checkbox" required checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1 accent-cyan" />
                   <span>I agree that Martinez Knight may use these details to respond to this enquiry and assess the services I have requested.</span>
                 </label>
                 {status === "error" && <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-200">{error}</p>}
-                <button type="submit" disabled={status === "sending"} className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors disabled:opacity-50">
-                  {status === "sending" ? "Submitting..." : "Submit Enquiry"} <ArrowRight size={16} />
+                <button type="submit" disabled={status === "sending"} className="mt-1 self-center inline-flex items-center justify-center gap-2 rounded-full bg-white text-black font-medium text-xs px-5 py-2.5 hover:bg-white/90 transition-colors disabled:opacity-50">
+                  {status === "sending" ? "Submitting..." : "Submit Enquiry"} <ArrowRight size={14} />
                 </button>
               </form>
             )}
