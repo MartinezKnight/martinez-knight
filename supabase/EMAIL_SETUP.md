@@ -84,7 +84,7 @@ If the database row is present but an email does not arrive, the lead itself is 
 
 ## Public and private routes
 
-- Public form: https://martinezknight.github.io/martinez-knight/business-discovery
-- Private admin sign-in: https://martinezknight.github.io/martinez-knight/internal/prospects
+- Public form: https://martinezknight.com/business-discovery
+- Private admin sign-in: https://martinezknight.com/internal/prospects
 
 The footer's **Admin Sign In** link only opens the sign-in route. It does not expose prospect records; the dashboard still requires an authorised Supabase Auth account and the existing Row Level Security policies.
