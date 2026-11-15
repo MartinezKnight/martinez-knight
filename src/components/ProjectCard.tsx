@@ -157,29 +157,39 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       className="grid md:grid-cols-2 gap-8 md:gap-14 items-center py-14 md:py-20 border-t border-white/10 first:border-t-0 first:pt-0"
     >
       {/* visual panel — a browser-chrome mockup of the delivered site, not a flat gradient card */}
-      <div
-        className={`group relative cursor-pointer ${reverse ? "md:order-2" : "md:order-1"}`}
-        onClick={go}
-      >
+      <div className={`group relative ${reverse ? "md:order-2" : "md:order-1"}`}>
         <span className="absolute -top-5 -left-3 font-black text-white/10 leading-none text-6xl md:text-7xl select-none pointer-events-none z-0">
           {project.n}
         </span>
-        <div className="relative z-10">
-          <BrowserMock project={project} />
-        </div>
-        <div className="relative z-10 flex items-center gap-1.5 text-white/50 text-xs font-medium uppercase tracking-widest mt-4 opacity-0 group-hover:opacity-100 group-hover:text-white transition-all duration-300">
-          View case study
-          <ArrowUpRight size={14} />
-        </div>
+        <button type="button" onClick={go} aria-label={`View ${project.name} case study`} className="block w-full cursor-pointer text-left rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan focus-visible:outline-offset-4">
+          <div className="relative z-10">
+            <BrowserMock project={project} />
+          </div>
+          <span className="relative z-10 flex items-center gap-1.5 text-cyan text-xs font-semibold uppercase tracking-wider mt-4">
+            Explore case study <ArrowUpRight size={14} />
+          </span>
+        </button>
       </div>
 
       {/* text panel */}
       <div className={reverse ? "md:order-1" : "md:order-2"}>
-        <p className="text-cyan text-xs uppercase tracking-widest mb-2">{project.category}</p>
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          <p className="text-cyan text-xs uppercase tracking-wider">{project.category}</p>
+          <span className="text-white/25 text-xs">/</span>
+          <span className="text-white/45 text-xs">{project.category.toLowerCase().includes("internal venture") ? "Martinez Knight venture" : "Client engagement"}</span>
+        </div>
         <h3 className="text-white text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight mb-4">
           {project.name}
         </h3>
-        <p className="text-white/65 text-sm sm:text-base leading-relaxed mb-6 max-w-lg">{summary}</p>
+        <p className="text-white/65 text-sm sm:text-base leading-7 mb-6 max-w-lg">{summary}</p>
+        {project.deliverables && (
+          <div className="flex flex-wrap gap-2 mb-6 max-w-lg">
+            {project.deliverables.slice(0, 4).map((item) => (
+              <span key={item} className="rounded-md border border-white/10 bg-white/[0.03] px-2.5 py-1.5 text-[11px] text-white/55">{item}</span>
+            ))}
+            {project.deliverables.length > 4 && <span className="px-2 py-1.5 text-[11px] text-white/40">+{project.deliverables.length - 4} more</span>}
+          </div>
+        )}
 
         {project.stats && (
           <div className="grid grid-cols-2 gap-3 mb-7 max-w-md">
@@ -197,13 +207,11 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           </div>
         )}
 
-        <div className="flex items-center gap-5">
-          <LiveProjectButton
-            label={project.liveUrl ? "Visit Live Site" : "View Project"}
-            href={project.liveUrl}
-            onClick={project.liveUrl ? undefined : go}
-          />
-       
+        <div className="flex flex-wrap items-center gap-3">
+          <button type="button" onClick={go} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-xs font-semibold uppercase tracking-wider text-black transition-colors hover:bg-cyan">
+            Read case study <ArrowUpRight size={14} />
+          </button>
+          {project.liveUrl && <LiveProjectButton label="Visit live site" href={project.liveUrl} />}
         </div>
       </div>
     </motion.div>
