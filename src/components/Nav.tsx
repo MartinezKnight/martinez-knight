@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, ChevronRight, ChevronDown, LockKeyhole } from "lucide-react";
+import { Menu, X, ChevronDown, LockKeyhole } from "lucide-react";
 import { SERVICES } from "../data/services";
 import { asset } from "../lib/assets";
 
