@@ -21,10 +21,10 @@ export default function ContactSection() {
           <span className="italic font-light">Your Business Runs On.</span>
         </SectionHeading>
         <p className="text-white/60 max-w-md mx-auto mb-10 text-sm leading-relaxed">
-          Book a free 30-minute strategy consultation with a senior Martinez Knight strategist.
+          Tell us what your business needs. We will review your enquiry and recommend a practical next step.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <ContactButton label="Book Free Consultation" href="/contact" />
+          <ContactButton label="Send an Enquiry" href="/contact?source=homepage-consultation" />
           <Link
             to="/work"
             className="inline-flex items-center gap-1.5 rounded-full border border-white/15 text-white text-sm font-medium px-6 py-3 hover:bg-white/5 transition-colors"
