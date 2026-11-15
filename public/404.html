@@ -3,13 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <title>Martinez Knight</title>
-    <!-- GitHub Pages serves this for any unknown path (e.g. a hard refresh
-         on /martinez-knight/about). It repackages the path into a query
-         string and redirects to index.html, which decodes it back —
-         standard fix for SPA routing on GitHub Pages
-         (github.com/rafgraph/spa-github-pages). -->
+    <!-- Preserve SPA routes on the custom-domain GitHub Pages site. -->
     <script>
-      var pathSegmentsToKeep = 1; // keep the /martinez-knight/ repo segment
+      var pathSegmentsToKeep = 0;
       var l = window.location;
       l.replace(
         l.protocol +
