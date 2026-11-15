@@ -31,16 +31,18 @@ export default function ProjectDetail() {
     <div className="min-h-screen pt-32 pb-24 px-5 sm:px-8 md:px-10">
       <FadeIn delay={0}>
         <Link to="/work" className="text-cyan text-sm uppercase tracking-widest mb-10 inline-block">
-          ← Back to Work
+          Back to selected work
         </Link>
         <div className="flex items-center gap-2 mb-3">
           <span className={`w-1.5 h-1.5 rounded-full ${project.liveUrl ? "bg-[#28c840]" : "bg-[#febc2e]"}`} />
-          <p className="text-cyan text-xs uppercase tracking-widest">{project.category}</p>
+          <p className="text-cyan text-xs uppercase tracking-wider">{project.category}</p>
+          <span className="text-white/25 text-xs">/</span>
+          <p className="text-white/45 text-xs">{project.category.toLowerCase().includes("internal venture") ? "Martinez Knight venture" : "Client engagement"}</p>
         </div>
         <SectionHeading as="h1" className="mb-8">
           {project.name}
         </SectionHeading>
-        <p className="text-text/80 text-lg max-w-2xl leading-relaxed mb-6">{project.long}</p>
+        <p className="text-white/70 text-base sm:text-lg max-w-3xl leading-8 mb-8">{project.long}</p>
         {project.liveUrl && (
           <div className="mb-12">
             <LiveProjectButton label="Visit Live Site" href={project.liveUrl} />
@@ -82,7 +84,8 @@ export default function ProjectDetail() {
       {project.deliverables && (
         <FadeIn delay={0.12}>
           <div className="max-w-4xl mb-14">
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-3">What We Delivered</p>
+            <p className="text-cyan text-xs uppercase tracking-wider mb-3">Scope of work</p>
+            <h2 className="text-white text-2xl font-semibold mb-5">What the engagement covered</h2>
             <div className="flex flex-wrap gap-2.5">
               {project.deliverables.map((d) => (
                 <span
@@ -101,11 +104,11 @@ export default function ProjectDetail() {
       {project.role && (
         <FadeIn delay={0.13}>
           <div className="max-w-4xl mb-14">
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Role</p>
+            <p className="text-cyan text-xs uppercase tracking-wider mb-2">Venture leadership</p>
             <p className="text-white text-sm mb-6">{project.role}</p>
             {project.contributions && (
               <>
-                <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Key Contributions</p>
+                <p className="text-white text-xl font-semibold mb-4">Key contributions</p>
                 <ul className="flex flex-col gap-2.5">
                   {project.contributions.map((c) => (
                     <li key={c} className="flex items-start gap-2.5 text-white/70 text-sm leading-relaxed">
@@ -124,7 +127,7 @@ export default function ProjectDetail() {
       {project.videoUrl && youtubeId(project.videoUrl) && (
         <FadeIn delay={0.14}>
           <div className="max-w-4xl mb-14">
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Pitch Video</p>
+            <p className="text-cyan text-xs uppercase tracking-wider mb-3">Project presentation</p>
             <div className="rounded-2xl overflow-hidden aspect-video border border-white/10">
               <iframe
                 src={`https://www.youtube.com/embed/${youtubeId(project.videoUrl)}`}
@@ -142,7 +145,7 @@ export default function ProjectDetail() {
       {project.links && (
         <FadeIn delay={0.15}>
           <div className="max-w-4xl mb-14">
-            <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Reference Materials</p>
+            <p className="text-cyan text-xs uppercase tracking-wider mb-3">Additional materials</p>
             <div className="flex flex-col gap-2">
               {project.links.map((l) => (
                 <a
@@ -176,7 +179,7 @@ export default function ProjectDetail() {
 
       <FadeIn delay={0.2}>
         <div className="flex flex-wrap items-center gap-6">
-          <ContactButton label="Start A Project Like This" href={`/contact?service=${encodeURIComponent(project.name + " related project")}&source=project-case-study`} />
+          <ContactButton label="Discuss a similar project" href={`/contact?service=${encodeURIComponent(project.name + " related project")}&source=project-case-study`} />
           <Link
             to={`/work/${next.slug}`}
             className="group flex items-center gap-1.5 text-white/60 hover:text-cyan text-sm uppercase tracking-widest transition-colors"
