@@ -1,6 +1,7 @@
 // Supabase Database Webhook handler: forwards a new prospect to a private Google Apps Script mailer.
 const corsHeaders = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "content-type, x-webhook-secret", "Access-Control-Allow-Methods": "POST, OPTIONS" };
 const clean = (value: unknown) => String(value ?? "").trim() || "Not provided";
+const html = (value: unknown) => clean(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char] as string);
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -36,8 +37,7 @@ Deno.serve(async (request) => {
     const email = String(lead.email ?? "").trim();
 
     const internalText = [
-      "A new business discovery form has been submitted.",
-      "",
+      "A new business discovery form has been submitted.", "",
       `Business: ${clean(lead.business_name)}`,
       `Contact: ${clean(lead.contact_name)}`,
       `Email: ${clean(email)}`,
@@ -47,42 +47,29 @@ Deno.serve(async (request) => {
       `Priority: ${priority}`,
       `Challenges: ${challenge}`,
       `Desired outcomes: ${outcomes}`,
-      `Preferred channel: ${preferredChannel}`,
-      "",
+      `Preferred channel: ${preferredChannel}`, "",
       `Review this prospect in the private pipeline: ${dashboardUrl}`,
     ].join("\n");
 
-    const internalHtml = `<h2>New business discovery submission</h2><p><strong>Business:</strong> ${clean(lead.business_name)}<br><strong>Contact:</strong> ${clean(lead.contact_name)}<br><strong>Email:</strong> ${clean(email)}<br><strong>Phone:</strong> ${clean(lead.phone)}<br><strong>Industry:</strong> ${clean(lead.industry)}<br><strong>Location:</strong> ${clean(lead.location)}<br><strong>Priority:</strong> ${priority}<br><strong>Challenges:</strong> ${challenge}<br><strong>Desired outcomes:</strong> ${outcomes}<br><strong>Preferred channel:</strong> ${preferredChannel}</p><p><a href="${dashboardUrl}">Open the private prospect pipeline</a></p>`;
+    const internalHtml = `<h2>New business discovery submission</h2><p><strong>Business:</strong> ${html(lead.business_name)}<br><strong>Contact:</strong> ${html(lead.contact_name)}<br><strong>Email:</strong> ${html(email)}<br><strong>Phone:</strong> ${html(lead.phone)}<br><strong>Industry:</strong> ${html(lead.industry)}<br><strong>Location:</strong> ${html(lead.location)}<br><strong>Priority:</strong> ${html(priority)}<br><strong>Challenges:</strong> ${html(challenge)}<br><strong>Desired outcomes:</strong> ${html(outcomes)}<br><strong>Preferred channel:</strong> ${html(preferredChannel)}</p><p><a href="${dashboardUrl}">Open the private prospect pipeline</a></p>`;
 
+    const contact = html(lead.contact_name);
     const acknowledgementText = [
-      `Hello ${clean(lead.contact_name)},`,
-      "",
-      "Thank you for taking the time to share information about your business with Martinez Knight.",
-      "",
-      "We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.",
-      "",
-      "Thank you for considering Martinez Knight.",
-      "",
-      "Regards,",
-      "Martinez Knight",
+      `Hello ${clean(lead.contact_name)},`, "",
+      "Thank you for taking the time to share information about your business with Martinez Knight.", "",
+      "We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.", "",
+      "Thank you for considering Martinez Knight.", "", "Regards,", "Martinez Knight",
       "Digital Infrastructure & Business Transformation",
     ].join("\n");
-
-    const acknowledgementHtml = `<p>Hello ${clean(lead.contact_name)},</p><p>Thank you for taking the time to share information about your business with Martinez Knight.</p><p>We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.</p><p>Thank you for considering Martinez Knight.</p><p>Regards,<br><strong>Martinez Knight</strong><br>Digital Infrastructure &amp; Business Transformation</p>`;
+    const acknowledgementHtml = `<p>Hello ${contact},</p><p>Thank you for taking the time to share information about your business with Martinez Knight.</p><p>We have received your business discovery submission. Our team will review your business context, current challenges and growth priorities, then get back to you through your preferred contact channel to discuss our observations, relevant opportunities and practical next steps.</p><p>Thank you for considering Martinez Knight.</p><p>Regards,<br><strong>Martinez Knight</strong><br>Digital Infrastructure &amp; Business Transformation</p>`;
 
     const response = await fetch(mailerUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        secret: mailerSecret,
-        adminEmail,
-        prospectEmail: email,
-        businessName: clean(lead.business_name),
-        internalText,
-        internalHtml,
-        acknowledgementText,
-        acknowledgementHtml,
-        dashboardUrl,
+        secret: mailerSecret, adminEmail, prospectEmail: email,
+        businessName: clean(lead.business_name), internalText, internalHtml,
+        acknowledgementText, acknowledgementHtml, dashboardUrl,
       }),
     });
     const result = await response.json().catch(() => ({}));
