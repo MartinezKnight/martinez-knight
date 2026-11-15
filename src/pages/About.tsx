@@ -281,7 +281,7 @@ export default function About() {
 
       <FadeIn delay={0.2}>
         <div className="flex justify-center mt-20">
-          <ContactButton label="Talk To Us" />
+          <ContactButton label="Talk To Us" href="/contact?source=about-page" />
         </div>
       </FadeIn>
     </div>
