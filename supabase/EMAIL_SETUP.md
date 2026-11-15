@@ -16,7 +16,7 @@ Email sending is **not active yet**. The Google Apps Script must be deployed, th
 
 ## Step 1 — Create the Google mailer
 
-1. Sign in to the Google account you want Martinez Knight emails to come from. The existing inbox noted for this setup is `martinezknighthrmc@gmail.com`; use it if you still have access, or use another Gmail account you control.
+1. Sign in to the Google account you want Martinez Knight emails to come from. The existing inbox noted for this setup is `martinezknightlimited@gmail.com`; use it if you still have access, or use another Gmail account you control.
 2. Open [Google Apps Script](https://script.google.com/) and create a **New project**.
 3. Delete the starter code and paste the complete contents of `supabase/google-apps-script/Code.gs` from this repository.
 4. Replace `REPLACE_WITH_A_LONG_RANDOM_SECRET` in the code with a long random value. Keep it private; you will enter the exact same value in Supabase in Step 3.
@@ -49,7 +49,7 @@ In Supabase Dashboard → Project → Edge Functions → Secrets, add:
 |---|---|
 | `GOOGLE_APPS_SCRIPT_URL` | The Web App URL copied in Step 2, ending in `/exec` |
 | `GOOGLE_APPS_SCRIPT_SECRET` | The exact random secret you placed in `Code.gs` |
-| `ADMIN_NOTIFICATION_EMAIL` | The Gmail inbox where you want to receive lead alerts; use `martinezknighthrmc@gmail.com` if that is still your preferred inbox |
+| `ADMIN_NOTIFICATION_EMAIL` | The Gmail inbox where you want to receive lead alerts; use `martinezknightlimited@gmail.com` if that is still your preferred inbox |
 | `WEBHOOK_SECRET` | A second, different long random secret for the Supabase database webhook |
 
 Keep these secrets in Supabase Function Secrets only. Never put them in the website code, public repository files, or GitHub frontend variables. The Apps Script source contains a placeholder only; replace it privately in your own Apps Script editor.
