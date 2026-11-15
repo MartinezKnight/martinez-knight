@@ -52,7 +52,7 @@ export default function ServiceDetail() {
 
       <FadeIn delay={0.15}>
         <div className="flex flex-wrap items-center gap-6">
-          <ContactButton label="Enquire About This Service" />
+          <ContactButton label="Enquire About This Service" href={`/contact?service=${encodeURIComponent(service.name)}&source=service-detail`} />
           <Link to={`/services/${next.slug}`} className="text-white/60 hover:text-cyan text-sm uppercase tracking-widest transition-colors">
             Next: {next.name} →
           </Link>
