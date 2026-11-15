@@ -22,7 +22,7 @@ const initial: FormState = {
   contactName:"", role:"", email:"", phone:"", preferredChannel:"WhatsApp", preferredTime:"",
   offerings:"", priorityOffer:"", targetCustomers:"", marketArea:"", platforms:[], systems:[],
   digitalMaturity:"", previousInvestment:"", previousResults:"", challenges:[], mainPriority:"",
-  desiredOutcomes:[], successMeasures:[], timeline:"", budget:"", decisionMaker:"", otherNotes:"", consent:"yes",
+  desiredOutcomes:[], successMeasures:[], timeline:"", budget:"", decisionMaker:"", otherNotes:"", consent:"no",
 };
 
 function Field({label, children, required=false}:{label:string;children:React.ReactNode;required?:boolean}) {
