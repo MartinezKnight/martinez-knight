@@ -39,9 +39,7 @@ export default function ApproachSection() {
           className="min-w-0"
         >
           <p className="text-white/60 text-base leading-[1.6] max-w-md">
-            Every service we run is built to talk to the others — your website,
-            CRM, automation and marketing aren't separate projects, they're one
-            system with six moving parts.
+            Our services are designed to work together. Your website, CRM, automation and marketing can share information and support the same business goals, instead of operating as disconnected tools.
           </p>
 
           <Link
