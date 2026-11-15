@@ -6,6 +6,7 @@ import SectionHeading from "../components/SectionHeading";
 import { SOCIALS } from "../data/socials";
 import { FacebookIcon, InstagramIcon, XIcon, LinkedInIcon } from "../components/SocialIcons";
 import { useTitle } from "../hooks/useTitle";
+import { isSupabaseConfigured, submitDiscovery } from "../lib/supabase";
 
 const SOCIAL_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   Facebook: FacebookIcon,
@@ -93,24 +94,39 @@ export default function Contact() {
     company: "",
     interest: AREAS_OF_INTEREST[0],
     message: "",
+    consent: false,
   });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const body = [
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Phone / WhatsApp: ${form.phone}`,
-      `Company / Organization: ${form.company}`,
-      `Area of interest: ${form.interest}`,
-      "",
-      form.message,
-    ].join("\n");
-    window.location.href = `mailto:hello@martinezknight.com?subject=${encodeURIComponent(
-      "New Enquiry — " + form.interest
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    if (!isSupabaseConfigured()) {
+      setError("The enquiry system is temporarily unavailable. Please contact us by phone or WhatsApp.");
+      setStatus("error");
+      return;
+    }
+    setStatus("sending");
+    setError("");
+    try {
+      await submitDiscovery({
+        businessName: form.company.trim() || `${form.name.trim()} (Individual enquiry)`,
+        contactName: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        industry: form.interest,
+        location: "Not provided",
+        source: "Website contact form",
+        consent: "yes",
+        contactForm: { ...form, consent: "yes" },
+        mainPriority: form.interest,
+        otherNotes: form.message.trim(),
+      });
+      setStatus("sent");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "We could not submit your enquiry. Please try again.");
+      setStatus("error");
+    }
   };
 
   const inputCls =
@@ -181,21 +197,11 @@ export default function Contact() {
       <div className="max-w-xl mx-auto mb-16">
         <FadeIn delay={0}>
           <div className="liquid-glass rounded-2xl p-6 sm:p-10">
-            {sent ? (
+            {status === "sent" ? (
               <div className="text-center py-10">
                 <CheckCircle2 size={40} className="text-cyan mx-auto mb-4" />
-                <h3 className="text-white text-xl font-semibold mb-2">Your email client should be opening now</h3>
-                <p className="text-white/60 text-sm">
-                  If it didn't, email us directly at{" "}
-                  <a href="mailto:hello@martinezknight.com" className="text-cyan hover:underline">
-                    hello@martinezknight.com
-                  </a>{" "}
-                  or call{" "}
-                  <a href="tel:+2347039148743" className="text-cyan hover:underline">
-                    +234 703 914 8743
-                  </a>
-                  .
-                </p>
+                <h3 className="text-white text-xl font-semibold mb-2">Enquiry received</h3>
+                <p className="text-white/60 text-sm">Thank you. Your enquiry has been securely submitted to Martinez Knight. Our team will review it and get back to you.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -267,11 +273,13 @@ export default function Contact() {
                     placeholder="Tell us what you need"
                   />
                 </label>
-                <button
-                  type="submit"
-                  className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors"
-                >
-                  Send Enquiry
+                <label className="flex items-start gap-3 text-xs leading-5 text-white/55">
+                  <input type="checkbox" required checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1 accent-cyan" />
+                  <span>I agree that Martinez Knight may use these details to respond to this enquiry and assess the services I have requested.</span>
+                </label>
+                {status === "error" && <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-200">{error}</p>}
+                <button type="submit" disabled={status === "sending"} className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors disabled:opacity-50">
+                  {status === "sending" ? "Submitting..." : "Send Enquiry"}
                 </button>
               </form>
             )}
