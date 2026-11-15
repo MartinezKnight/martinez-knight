@@ -40,11 +40,11 @@ export default function EngagementSection() {
       <div className="text-center mb-14">
         <div className="flex items-center gap-2 text-white/50 text-xs uppercase tracking-widest justify-center">
           <span className="w-1.5 h-1.5 rounded-full bg-white" />
-          How We Work
+          Engagement options
         </div>
-        <SectionHeading className="mt-5">Three ways to start.</SectionHeading>
+        <SectionHeading className="mt-5">Choose the right level of support.</SectionHeading>
         <p className="mt-4 text-white/50 text-sm max-w-md mx-auto">
-          We scope each engagement around your business requirements. Contact us for a proposal based on the systems and outcomes you need.
+          From a focused digital foundation to connected business systems, we shape the scope around your priorities and operational needs.
         </p>
       </div>
 
