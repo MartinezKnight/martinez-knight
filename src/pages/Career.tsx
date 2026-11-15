@@ -20,7 +20,7 @@ const FIELDS_OF_INTEREST = [
 const EXPERIENCE_LEVELS = ["Entry-level / No experience yet", "1–3 years", "3–7 years", "7+ years"];
 
 export default function Career() {
-  useTitle("Careers");
+  useTitle("Recruitment & HR Consultancy | Delta State and Nigeria");
   const [form, setForm] = useState({
     name: "", email: "", phone: "", field: FIELDS_OF_INTEREST[0],
     experience: EXPERIENCE_LEVELS[0], portfolio: "", message: "", consent: false,
@@ -60,9 +60,12 @@ export default function Career() {
           Careers.
         </SectionHeading>
         <p className="text-center text-white/60 max-w-lg mx-auto text-base leading-relaxed mb-2">
-          There are no open roles at Martinez Knight itself right now. But as
-          an HR consultancy, we also help place candidates with client
-          companies — register below and we'll reach out when something fits.
+          Martinez Knight has roots in HR management and recruitment support,
+          including our early work in Asaba, Delta State, Nigeria. We continue
+          to support candidate registration and recruitment-related engagements
+          alongside our wider digital and business services. There are no open
+          internal roles at present, but you may register your interest below
+          for suitable opportunities with client organisations.
         </p>
       </FadeIn>
 
