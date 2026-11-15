@@ -35,7 +35,7 @@ export default function Contact() {
     email: "",
     phone: "",
     company: "",
-    interest: requestedService || AREAS_OF_INTEREST[0],
+    interest: requestedService,
     message: "",
     consent: false,
   });
@@ -60,13 +60,13 @@ export default function Contact() {
         contactName: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim(),
-        industry: form.interest,
+        industry: "Not provided",
         location: "Not provided",
         source: "Website contact form — " + enquirySource,
         consent: form.consent ? "yes" : "no",
         contactForm: { ...form, consent: form.consent },
-        mainPriority: form.interest,
-        otherNotes: form.message.trim(),
+        mainPriority: form.interest || "General enquiry",
+        otherNotes: [form.interest ? `Service / area of interest: ${form.interest}` : "Service / area of interest: Not specified", form.message.trim()].join("\n\n"),
       });
       setStatus("sent");
     } catch (err) {
@@ -81,14 +81,14 @@ export default function Contact() {
   return (
     <div className="min-h-screen pt-32 pb-24 px-5 sm:px-8 md:px-10">
       <FadeIn delay={0}>
-        <p className="text-center text-cyan text-xs tracking-[0.3em] uppercase mb-6">Ready To Lead Your Market?</p>
+        <p className="text-center text-cyan text-xs tracking-[0.3em] uppercase mb-6">Contact Martinez Knight</p>
         <SectionHeading as="h1" className="text-center mb-6 max-w-3xl mx-auto">
-          Let's Build The System
+          Let's Talk About
           <br />
-          <span className="italic font-light">Your Business Runs On.</span>
+          <span className="italic font-light">What Your Business Needs.</span>
         </SectionHeading>
-        <p className="text-center text-white/60 max-w-md mx-auto mb-10 text-sm leading-relaxed">
-          A direct line to our team for service enquiries, partnerships and general questions. Share the essentials and we will respond with a clear next step.
+        <p className="text-center text-white/60 max-w-xl mx-auto mb-10 text-sm leading-relaxed">
+          Whether you need a specific service, want to discuss a project, or have a general business enquiry, share a few details and our team will guide you to the right next step.
         </p>
       </FadeIn>
 
@@ -140,9 +140,9 @@ export default function Contact() {
       </FadeIn>
 
       {/* lead form */}
-      <div className="max-w-2xl mx-auto mb-16">
+      <div className="max-w-3xl mx-auto mb-16">
         <FadeIn delay={0}>
-          <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-10 shadow-2xl shadow-black/20">
+          <div className="liquid-glass rounded-3xl border border-white/10 p-7 sm:p-11 shadow-2xl shadow-black/20">
             {status === "sent" ? (
               <div className="text-center py-10">
                 <CheckCircle2 size={40} className="text-cyan mx-auto mb-4" />
@@ -151,7 +151,7 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <div className="mb-2"><p className="mb-2 text-xs uppercase tracking-[.22em] text-cyan">Start a conversation</p><h3 className="text-white text-2xl font-semibold">How can we help?</h3><p className="mt-2 text-sm text-white/45">This is a short enquiry form, not the full business assessment.</p></div>
+                <div className="mb-3 border-b border-white/10 pb-5"><p className="mb-2 text-xs uppercase tracking-[.22em] text-cyan">01 / General enquiry</p><h3 className="text-white text-2xl sm:text-3xl font-semibold">Tell us what you have in mind.</h3><p className="mt-2 max-w-xl text-sm leading-6 text-white/45">A short, direct enquiry for projects, services, partnerships and questions. For a deeper business assessment, use Business Growth & Discovery below.</p></div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <label className="flex flex-col gap-1.5">
                     <span className="text-white/50 text-xs uppercase tracking-wide">Full Name</span>
@@ -195,12 +195,14 @@ export default function Contact() {
                   </label>
                 </div>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-white/50 text-xs uppercase tracking-wide">Service / area of interest</span>
+                  <span className="text-white/50 text-xs uppercase tracking-wide">What would you like to discuss?</span>
                   <select
+                    required
                     value={form.interest}
                     onChange={(e) => setForm({ ...form, interest: e.target.value })}
                     className={inputCls}
                   >
+                    <option value="" className="bg-[#0a0c10]">Select a service or enquiry type</option>
                     {AREAS_OF_INTEREST.map((opt) => (
                       <option key={opt} value={opt} className="bg-[#0a0c10]">
                         {opt}
@@ -225,7 +227,7 @@ export default function Contact() {
                 </label>
                 {status === "error" && <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/5 p-3 text-sm text-red-200">{error}</p>}
                 <button type="submit" disabled={status === "sending"} className="mt-2 rounded-full bg-white text-black font-medium text-sm px-6 py-3.5 hover:bg-white/90 transition-colors disabled:opacity-50">
-                  {status === "sending" ? "Submitting..." : "Send Enquiry"} <ArrowRight size={16} />
+                  {status === "sending" ? "Submitting..." : "Submit Enquiry"} <ArrowRight size={16} />
                 </button>
               </form>
             )}
