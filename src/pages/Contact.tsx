@@ -113,10 +113,10 @@ export default function Contact() {
             <p className="text-white/40 text-xs uppercase tracking-widest mb-1.5">WhatsApp</p>
             <p className="text-white text-sm font-medium">Chat with us</p>
           </a>
-          <a href="mailto:martinezknighthrmc@gmail.com" className="text-center hover:opacity-80 transition-opacity">
+          <a href="mailto:martinezknightlimited@gmail.com" className="text-center hover:opacity-80 transition-opacity">
             <Mail size={20} className="text-cyan mx-auto mb-3" />
             <p className="text-white/40 text-xs uppercase tracking-widest mb-1.5">Email</p>
-            <p className="text-white text-sm font-medium break-all">martinezknighthrmc@gmail.com</p>
+            <p className="text-white text-sm font-medium break-all">martinezknightlimited@gmail.com</p>
           </a>
           <div className="text-center">
             <MapPin size={20} className="text-cyan mx-auto mb-3" />
