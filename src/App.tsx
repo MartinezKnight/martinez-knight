@@ -17,6 +17,7 @@ import ProspectPipeline from "./pages/ProspectPipeline";
 import Training from "./pages/Training";
 import TrainingApply from "./pages/TrainingApply";
 import Sitemap from "./pages/Sitemap";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import { SOCIALS } from "./data/socials";
 import { FacebookIcon, InstagramIcon, XIcon, LinkedInIcon } from "./components/SocialIcons";
@@ -50,7 +51,7 @@ function Footer() {
       </div>
       <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4">
         <Link to="/work" className="hover:text-cyan transition-colors">Work</Link>
-        <Link to="/contact" className="hover:text-cyan transition-colors">FAQ</Link>
+        <Link to="/faq" className="hover:text-cyan transition-colors">FAQs</Link>
         <Link to="/sitemap" className="hover:text-cyan transition-colors">Sitemap</Link>
       </div>
       <div className="px-4 text-center text-white/30">
@@ -100,7 +101,7 @@ function App() {
             <Route path="/internal/prospects" element={<ProspectPipeline />} />
             <Route path="/training" element={<Training />} />
             <Route path="/training/apply" element={<TrainingApply />} />
-            <Route path="/faq" element={<Navigate to="/contact" replace />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
