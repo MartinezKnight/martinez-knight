@@ -17,7 +17,7 @@ const NEWS = [
     date: "2026",
     title: "Nigeria's digital economy on track for $18.3bn in 2026",
     summary:
-      "Industry reports cited by BusinessDay project Nigeria's digital economy revenue nearly doubling from 2021 levels, driven by AI adoption, a maturing fintech sector, and wider cloud and broadband rollout — alongside a more defined regulatory push from NITDA.",
+      "Industry reports cited by BusinessDay project strong growth in Nigeria's digital economy, supported by AI adoption, fintech expansion, wider cloud and broadband access, and evolving regulation from NITDA.",
     source: "BusinessDay NG",
     url: "https://businessday.ng/technology/article/2026-marks-turning-point-for-nigerias-tech-ecosystem-on-regulation-innovation/",
   },
@@ -41,7 +41,7 @@ const NEWS = [
 
 const EXPOS = [
   {
-    name: "GITEX Nigeria — Tech Expo & Future Economy Conference",
+    name: "GITEX Nigeria: Tech Expo & Future Economy Conference",
     when: "31 Aug – 3 Sep 2026",
     where: "Abuja & Lagos",
     url: "https://gitexnigeria.ng/",
@@ -76,9 +76,7 @@ export default function Blog() {
           The Blog.
         </SectionHeading>
         <p className="text-center text-white/60 max-w-lg mx-auto text-base leading-relaxed mb-16">
-          We're still writing our own original pieces on digital infrastructure
-          and systems — in the meantime, here's what's moving in tech right
-          now, curated from real reporting.
+          We are developing original articles on digital infrastructure and business systems. In the meantime, explore these selected updates from across the technology industry.
         </p>
       </FadeIn>
 
