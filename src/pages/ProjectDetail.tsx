@@ -176,7 +176,7 @@ export default function ProjectDetail() {
 
       <FadeIn delay={0.2}>
         <div className="flex flex-wrap items-center gap-6">
-          <ContactButton label="Start A Project Like This" />
+          <ContactButton label="Start A Project Like This" href={`/contact?service=${encodeURIComponent(project.name + " — related project")}&source=project-case-study`} />
           <Link
             to={`/work/${next.slug}`}
             className="group flex items-center gap-1.5 text-white/60 hover:text-cyan text-sm uppercase tracking-widest transition-colors"
