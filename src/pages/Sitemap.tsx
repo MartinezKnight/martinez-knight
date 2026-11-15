@@ -48,7 +48,8 @@ export default function Sitemap() {
               { to: "/blog", label: "Blog" },
               { to: "/career", label: "Career" },
               { to: "/business-discovery", label: "Business Growth & Discovery" },
-              { to: "/contact", label: "Contact Us (incl. FAQ)" },
+              { to: "/faq", label: "Frequently Asked Questions" },
+              { to: "/contact", label: "Contact" },
             ]}
           />
           <Column
