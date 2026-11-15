@@ -9,11 +9,11 @@ import { useTitle } from "../hooks/useTitle";
 const FAQS = [
   {
     q: "What does \"Digital Infrastructure & Business Transformation\" actually mean?",
-    a: "It means we don't just build you a website and disappear. We build and run the whole system your business operates on — website, hosting, business email, CRM, automation, SEO and support — as one connected package, not six separate vendors who don't talk to each other.",
+    a: "It means we don't just build you a website and disappear. We build and manage the systems your business relies on, including your website, hosting, business email, CRM, automation, SEO and technical support. These services are designed to work together, with one team responsible for delivery.",
   },
   {
     q: "How much does a typical engagement cost?",
-    a: "Our SME Digital Infrastructure package starts at a ₦500,000 setup fee plus ₦50,000–₦150,000/month ongoing support, depending on scope. Pitch decks run ₦150,000–₦500,000 per project, business automation ₦300,000–₦2,000,000 per project. Exact pricing depends on what you need — book a consult and we'll give you a real number, not a range.",
+    a: "Our SME Digital Infrastructure package starts at a ₦500,000 setup fee plus ₦50,000–₦150,000/month ongoing support, depending on scope. Pitch decks run ₦150,000–₦500,000 per project, business automation ₦300,000–₦2,000,000 per project. Your final investment depends on the scope of work. Contact us to discuss your requirements and receive a tailored quotation.",
   },
   {
     q: "How long does a project take?",
@@ -21,11 +21,11 @@ const FAQS = [
   },
   {
     q: "Do you only work with hotels and hospitality businesses?",
-    a: "No. Hospitality is one of our strongest sectors — see Elpazio in our Work section — but we also work with real estate, spas, architecture and construction firms, retail, logistics, and technology companies. If your business needs infrastructure, growth, automation or corporate documentation, we can help.",
+    a: "No. We work with businesses across hospitality, real estate, wellness, architecture, construction, retail, logistics and technology. Our work includes digital infrastructure, business growth, automation and corporate documentation.",
   },
   {
     q: "Do you offer ongoing support after launch, or just the build?",
-    a: "Ongoing support is core to how we work — most engagements include a monthly retainer for hosting, technical support, updates and maintenance. We don't disappear after handover.",
+    a: "Ongoing support is an important part of our delivery model. Depending on the project, this can include hosting, technical support, updates and maintenance after launch.",
   },
   {
     q: "I already have a website. Can you just take over hosting/email/CRM?",
@@ -33,7 +33,7 @@ const FAQS = [
   },
   {
     q: "Can you train our team instead of just building the system for us?",
-    a: "Yes — Training & Professional Development is one of our six core service lines, covering corporate training, practical skills workshops and career development programmes.",
+    a: "Yes. Our Training & Professional Development service covers corporate training, practical skills workshops and career development programmes.",
   },
 ];
 
