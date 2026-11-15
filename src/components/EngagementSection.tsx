@@ -44,8 +44,7 @@ export default function EngagementSection() {
         </div>
         <SectionHeading className="mt-5">Three ways to start.</SectionHeading>
         <p className="mt-4 text-white/50 text-sm max-w-md mx-auto">
-          Every engagement is scoped to what your business actually needs — talk
-          to us for a quote built around your systems, not a price list.
+          We scope each engagement around your business requirements. Contact us for a proposal based on the systems and outcomes you need.
         </p>
       </div>
 
