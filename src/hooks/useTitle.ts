@@ -47,5 +47,6 @@ export function useTitle(title: string) {
     setMeta('meta[property="og:description"]', "content", description);
     setMeta('meta[property="og:url"]', "content", canonical);
     setMeta('link[rel="canonical"]', "href", canonical);
+    setMeta('meta[name="robots"]', "content", title === "Prospect Pipeline" ? "noindex, nofollow" : "index, follow");
   }, [title]);
 }
